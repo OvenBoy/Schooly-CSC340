@@ -1,6 +1,7 @@
 package data.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Instructor {
@@ -13,6 +14,30 @@ public class Instructor {
     private String email;
     private int courseID;
 
+    @Size(max = 20)
+    @Column(name = "first_name", length = 20)
+    private String firstName;
+
+    @Size(max = 20)
+    @Column(name = "last_name", length = 20)
+    private String lastName;
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
 
     public Instructor(Long instID, String fName, String lName, String email, int courseID) {
         this.instID = instID;
@@ -24,12 +49,7 @@ public class Instructor {
 
     public Instructor() {
     }
-
-
-    @Override
-    public String toString() {
-        return String.format("Instructor[instID: %ld, fName: %s, lName: %s, email: %s, courseID: %d]",instID, fName, lName, email, courseID);
-    }
+    
 
     public String getfName() {
         return fName;
