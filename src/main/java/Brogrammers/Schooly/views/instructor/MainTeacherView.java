@@ -14,7 +14,7 @@ import com.vaadin.flow.router.RouteAlias;
 import data.entity.User1;
 
 @RolesAllowed("ROLE_TEACHER")
-@Route(value = "teacher/", layout = AppLayoutNavbarPlacement.class)
+@Route(value = "teacher", layout = AppLayoutNavbarPlacement.class)
 public class MainTeacherView extends VerticalLayout{
 
     Grid<User1> grid = new Grid<>(User1.class);
