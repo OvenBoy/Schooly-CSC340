@@ -1,6 +1,8 @@
 package Brogrammers.Schooly.views.student;
 
 import Brogrammers.Schooly.views.AppLayoutNavbarPlacementStudent;
+import Brogrammers.Schooly.views.admin.AdminViewInst;
+import Brogrammers.Schooly.views.instructor.MainTeacherView;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
@@ -9,14 +11,13 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.*;
 import com.vaadin.flow.component.grid.Grid;
 
-import com.vaadin.flow.router.RouteAlias;
 import data.entity.Stu_AssignmentDetailsFormLayout;
 import data.entity.Stu_Assignments;
 import data.entity.Stu_Grades;
+import Brogrammers.Schooly.views.SecurityConfig;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -24,11 +25,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Route(value = "student/", layout= AppLayoutNavbarPlacementStudent.class)
-@RouteAlias(value = "", layout = AppLayoutNavbarPlacementStudent.class)
+@Route(value = "student", layout= AppLayoutNavbarPlacementStudent.class)
 @PageTitle("Dashboard | Schooly")
 @RolesAllowed("ROLE_STUDENT")
-public class MainStudentView extends VerticalLayout{
+
+public class MainStudentView extends VerticalLayout {
     Grid<Stu_Assignments> assGrid = new Grid<>(Stu_Assignments.class);
     Grid<Stu_Grades> gradeGrid = new Grid<>(Stu_Grades.class);
 
