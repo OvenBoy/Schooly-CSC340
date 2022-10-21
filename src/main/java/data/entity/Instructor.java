@@ -49,7 +49,7 @@ public class Instructor {
 
     public Instructor() {
     }
-    
+
 
     public String getfName() {
         return fName;
