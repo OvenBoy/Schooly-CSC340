@@ -16,6 +16,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.RouterLink;
+import org.apache.catalina.webresources.FileResource;
 
 public class AppLayoutNavbarPlacementStudent extends AppLayout {
 
@@ -28,6 +29,7 @@ public class AppLayoutNavbarPlacementStudent extends AppLayout {
 
     protected void createHeader(){
         DrawerToggle toggle = new DrawerToggle();
+
 
         H1 title = new H1("Schooly");
         title.getStyle().set("font-size", "var(--lumo-font-size-l)").set("margin", "0");
