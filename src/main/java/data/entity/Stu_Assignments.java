@@ -11,6 +11,19 @@ public class Stu_Assignments {
         this.possiblePoints = possiblePoints;
 
     }
+
+    public Stu_Assignments(String courseTitle, String assignmentTitle, String dueDate, String time,
+                           String possiblePoints, String description, String status){
+        this.courseTitle = courseTitle;
+        this.assignmentTitle = assignmentTitle;
+        this.dueDate = dueDate;
+        this.time = time;
+        this.possiblePoints = possiblePoints;
+        this.description = description;
+        this.status = status;
+
+    }
+
     protected String courseTitle = "";
     protected String assignmentTitle = "";
     protected String dueDate = "";
@@ -18,7 +31,25 @@ public class Stu_Assignments {
     protected String time = "";
 
     protected String possiblePoints = "";
+    protected String description = "";
+    protected String status = "";
 
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public String getPossiblePoints(){
         return possiblePoints;

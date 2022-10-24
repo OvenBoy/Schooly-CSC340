@@ -17,12 +17,12 @@ import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 
 @Route(value ="to-do", layout = AppLayoutNavbarPlacementStudent.class)
-@PageTitle("To-Do | Schooly")
+@PageTitle("To-Do  | Schooly")
 @RolesAllowed("ROLE_STUDENT")
 public class StudentToDoView extends VerticalLayout {
 
-    H2 currentPage = new H2("To-Do");
-    VerticalLayout todosList = new VerticalLayout();
+    protected H2 currentPage = new H2("To-Do");
+    protected VerticalLayout todosList = new VerticalLayout();
 
     public StudentToDoView(){
         addClassName("list-view");

@@ -30,13 +30,13 @@ import java.util.List;
 @RolesAllowed("ROLE_STUDENT")
 
 public class MainStudentView extends VerticalLayout {
-    Grid<Stu_Assignments> assGrid = new Grid<>(Stu_Assignments.class);
-    Grid<Stu_Grades> gradeGrid = new Grid<>(Stu_Grades.class);
+    protected Grid<Stu_Assignments> assGrid = new Grid<>(Stu_Assignments.class);
+    protected Grid<Stu_Grades> gradeGrid = new Grid<>(Stu_Grades.class);
 
 
-    H2 currentPage = new H2("Dashboard");
-    H3 assTitle = new H3("Assignments");
-    H3 gradeTitle = new H3("Grades");
+    protected H2 currentPage = new H2("Dashboard");
+    protected H3 assTitle = new H3("Assignments");
+    protected H3 gradeTitle = new H3("Grades");
 
 
 

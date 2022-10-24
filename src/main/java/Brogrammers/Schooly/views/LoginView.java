@@ -5,11 +5,13 @@ import Brogrammers.Schooly.views.instructor.MainTeacherView;
 import Brogrammers.Schooly.views.student.MainStudentView;
 import Brogrammers.Schooly.views.student.StudentToDoView;
 import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;
@@ -46,10 +48,19 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
 		HorizontalLayout logo = new HorizontalLayout();
 		logo.setId("logo");
-		logo.setAlignItems(Alignment.CENTER);
-		logo.add(new Image("src/main/webapp/WEB-INF/images/logo.svg", "Schooly Logo"));
+		Image img = new Image("images/logo.svg", "Schooly Logo");
+		H1 title = new H1("Schooly");
+		title.getStyle().set("vertical-align", "baseline");
+		img.setMaxHeight("50%");
+		logo.add(img, title);
 
-		add(logo, new H1("Schooly"), login);
+		logo.getThemeList().add("spacing-xs");
+	    logo.setJustifyContentMode(JustifyContentMode.EVENLY);
+		logo.setDefaultVerticalComponentAlignment(Alignment.END);
+		setPadding(false);
+		logo.setWidth("Auto");
+
+		add(logo, login);
 	}
 
 	@Override

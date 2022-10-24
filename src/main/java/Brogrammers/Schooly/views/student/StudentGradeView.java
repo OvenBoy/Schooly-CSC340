@@ -23,8 +23,8 @@ import java.util.List;
 @RolesAllowed("ROLE_STUDENT")
 public class StudentGradeView extends VerticalLayout {
 
-    Grid<Stu_Grades> grid = new Grid<>(Stu_Grades.class);
-    H2 currentPage = new H2("Grades");
+    protected Grid<Stu_Grades> grid = new Grid<>(Stu_Grades.class);
+    protected H2 currentPage = new H2("Grades");
 
     public StudentGradeView() {
         addClassName("student-grade-view");
