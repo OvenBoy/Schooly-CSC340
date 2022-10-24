@@ -13,7 +13,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.*;
 
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 
 @Route(value ="to-do", layout = AppLayoutNavbarPlacementStudent.class)
@@ -25,6 +24,8 @@ public class StudentToDoView extends VerticalLayout {
     protected VerticalLayout todosList = new VerticalLayout();
 
     public StudentToDoView(){
+
+
         addClassName("list-view");
         setSizeFull();
         configHeader();

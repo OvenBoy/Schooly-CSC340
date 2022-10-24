@@ -1,8 +1,6 @@
 package Brogrammers.Schooly.views.student;
 
 import Brogrammers.Schooly.views.AppLayoutNavbarPlacementStudent;
-import Brogrammers.Schooly.views.admin.AdminViewInst;
-import Brogrammers.Schooly.views.instructor.MainTeacherView;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
@@ -17,9 +15,9 @@ import com.vaadin.flow.component.grid.Grid;
 import data.entity.Stu_AssignmentDetailsFormLayout;
 import data.entity.Stu_Assignments;
 import data.entity.Stu_Grades;
-import Brogrammers.Schooly.views.SecurityConfig;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +31,6 @@ public class MainStudentView extends VerticalLayout {
     protected Grid<Stu_Assignments> assGrid = new Grid<>(Stu_Assignments.class);
     protected Grid<Stu_Grades> gradeGrid = new Grid<>(Stu_Grades.class);
 
-
     protected H2 currentPage = new H2("Dashboard");
     protected H3 assTitle = new H3("Assignments");
     protected H3 gradeTitle = new H3("Grades");
@@ -41,18 +38,28 @@ public class MainStudentView extends VerticalLayout {
 
 
     public MainStudentView() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails)principal).getUsername();
+        H3 welcome = new H3("Welcome " + username + "!");
+        welcome.getStyle().set("margin-top", "0px");
+
+
         addClassName("student-main-view");
+        setSpacing(false);
+        getThemeList().add("spacing-s");
         setSizeFull();
         configHeader();
-        HorizontalLayout hlayout = new HorizontalLayout(assGrid, gradeGrid);
-        HorizontalLayout textLayout = new HorizontalLayout(assTitle, gradeTitle);
+        HorizontalLayout hlayout = new HorizontalLayout(assGrid, gradeGrid); // Grids for Assingments and Grades
+        HorizontalLayout textLayout = new HorizontalLayout(assTitle, gradeTitle); // Titles above respective grid
 
+        //add above to vertical layout
         VerticalLayout page = new VerticalLayout(textLayout, hlayout);
 
         assTitle.setWidth("100%");
         gradeTitle.setWidth("100%");
         textLayout.setVerticalComponentAlignment(Alignment.CENTER);
 
+        //Configure Page
         page.setWidth("100%");
         page.setPadding(false);
         page.setSpacing(false);
@@ -60,7 +67,7 @@ public class MainStudentView extends VerticalLayout {
 
         configureGrid();
 
-
+        //hard-coded data
         List<Stu_Grades> grades = new ArrayList<Stu_Grades>();
         grades.add(new Stu_Grades("CSC-340", "Test-Case Assignment",
                 "90/100", ((90.0 / 100.0) * 100.0)));
@@ -77,9 +84,10 @@ public class MainStudentView extends VerticalLayout {
         assignments.add(new Stu_Assignments("HIS-101", "History Paper 3",
                 "10/18/2022", "1PM", "100"));
 
+        //add items to grids
         gradeGrid.setItems(grades);
         assGrid.setItems(assignments);
-
+        //drop-down for assignment grid
         assGrid.setItemDetailsRenderer(createAssignmentDetailRenderer());
 
         textLayout.setPadding(true);
@@ -88,9 +96,10 @@ public class MainStudentView extends VerticalLayout {
         hlayout.setPadding(true);
         hlayout.setWidth("100%");
 
-        Hr border = new Hr();
+        //Hr border = new Hr();
+        welcome.getStyle().set("color", "hsl(214, 100%, 43%)");
 
-        add(currentPage, border, page);
+        add(currentPage, welcome, new Hr(), page);
     }
 
     private ComponentRenderer<Stu_AssignmentDetailsFormLayout, Stu_Assignments> createAssignmentDetailRenderer() {
@@ -99,6 +108,7 @@ public class MainStudentView extends VerticalLayout {
 
 
     private void configHeader() {
+
         HorizontalLayout header = new HorizontalLayout(
                 currentPage
         );
