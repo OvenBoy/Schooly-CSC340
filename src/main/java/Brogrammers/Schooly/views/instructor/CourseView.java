@@ -1,13 +1,12 @@
 package Brogrammers.Schooly.views.instructor;
 
+import Brogrammers.Schooly.Entity.Course;
+import Brogrammers.Schooly.Repository.CourseRepository;
 import Brogrammers.Schooly.views.AppLayoutNavbarPlacement;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
-import data.entity.Course;
 
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import java.util.Arrays;
 import java.util.List;
@@ -15,15 +14,11 @@ import java.util.List;
 @RolesAllowed("ROLE_TEACHER")
 @Route(value = "course", layout = AppLayoutNavbarPlacement.class)
 public class CourseView extends VerticalLayout{
-
+    CourseRepository courseRepository;
     Grid<Course> grid = new Grid<>(Course.class);
-    List<Course> courses = Arrays.asList(
-            new Course("ENG-107", "Intro to English Literature", "22"),
-            new Course("ENG-108", "Intro to English Literature II", "15"),
-            new Course("MAT-103", "Pre-Algebra", "12")
-    );
 
-    public CourseView() {
+    public CourseView(CourseRepository courseRepository) {
+        this.courseRepository = courseRepository;
         addClassName("Course-Teacher-View");
         setSizeFull();
         configureGrid();
@@ -36,6 +31,6 @@ public class CourseView extends VerticalLayout{
         grid.addClassNames("contact-grid");
         grid.setSizeFull();
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
-        grid.setItems(courses);
+        grid.setItems(courseRepository.findAll());
     }
 }

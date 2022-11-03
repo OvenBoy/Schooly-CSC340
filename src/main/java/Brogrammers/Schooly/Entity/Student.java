@@ -7,21 +7,39 @@ import javax.validation.constraints.Size;
 @Table(name = "student")
 public class Student {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(
+            name = "student_sequence",
+            sequenceName = "student_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "student_sequence"
+    )
     @Column(name = "studID", nullable = false)
     private Integer id;
 
     @Size(max = 20)
-    @Column(name = "fName", length = 20)
+    @Column(name = "f_name", length = 20)
     private String fName;
 
     @Size(max = 20)
-    @Column(name = "lName", length = 20)
+    @Column(name = "l_name", length = 20)
     private String lName;
 
     @Size(max = 255)
     @Column(name = "email")
     private String email;
+
+    public Student(String fName, String lName, String email) {
+        this.fName = fName;
+        this.lName = lName;
+        this.email = email;
+    }
+
+    public Student() {
+
+    }
 
     public Integer getId() {
         return id;
@@ -54,6 +72,5 @@ public class Student {
     public void setEmail(String email) {
         this.email = email;
     }
-
 
 }

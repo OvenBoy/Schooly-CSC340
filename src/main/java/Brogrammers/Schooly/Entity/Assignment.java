@@ -7,9 +7,14 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "assignment")
 public class Assignment {
-    @Id
-    @Column(nullable = false)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EmbeddedId
+    private AssignmentId id;
+
+    @MapsId("courseID")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "courseID", nullable = false)
+    private Course courseID;
 
     @Column(name = "dueDate")
     private LocalDate dueDate;
@@ -18,13 +23,20 @@ public class Assignment {
     @Column(name = "description")
     private String description;
 
-
-    public Integer getId() {
+    public AssignmentId getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(AssignmentId id) {
         this.id = id;
+    }
+
+    public Course getCourseID() {
+        return courseID;
+    }
+
+    public void setCourseID(Course courseID) {
+        this.courseID = courseID;
     }
 
     public LocalDate getDueDate() {

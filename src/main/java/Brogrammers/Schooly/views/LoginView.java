@@ -1,24 +1,17 @@
 package Brogrammers.Schooly.views;
 
-import Brogrammers.Schooly.views.admin.AdminViewInst;
+import Brogrammers.Schooly.views.admin.InstructorList;
 import Brogrammers.Schooly.views.instructor.MainTeacherView;
 import Brogrammers.Schooly.views.student.MainStudentView;
-import Brogrammers.Schooly.views.student.StudentToDoView;
-import com.vaadin.flow.component.ClickEvent;
-import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
-import org.apache.coyote.AbstractProcessorLight;
-
-import java.awt.*;
 
 @Route("login")
 @PageTitle("Login | Schooly")
@@ -36,7 +29,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
 		login.addLoginListener(e -> {
 			if("admin".equals(e.getUsername())){
-				UI.getCurrent().navigate(AdminViewInst.class);
+				UI.getCurrent().navigate(InstructorList.class);
 			}else if("instructor".equals(e.getUsername())){
 				UI.getCurrent().navigate(MainTeacherView.class);
 			} else if("student".equals(e.getUsername())){

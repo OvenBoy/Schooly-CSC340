@@ -1,39 +1,38 @@
 package Brogrammers.Schooly.views.admin;
 
-import com.vaadin.flow.component.*;
+import Brogrammers.Schooly.Entity.Instructor;
+import Brogrammers.Schooly.Repository.InstructorRepository;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-import data.entity.Instructor;
 
 import javax.annotation.security.RolesAllowed;
-import java.util.ArrayList;
 
 import static java.lang.Boolean.TRUE;
 
-@RolesAllowed("ROLE_ADMIN")
 @PageTitle("Admin-Instructor")
-@Route(value = "/Admin/instructor")
-public class AdminViewInst extends VerticalLayout {
-    ArrayList<Instructor> instructors = new ArrayList<>(5);
+@Route("/Admin/instructor")
+@RolesAllowed("ROLE_ADMIN")
+public class InstructorList extends VerticalLayout {
+
+    InstructorRepository instructorRepository;
     Grid<Instructor> grid = new Grid<>();
+
     TextField search = new TextField();
-    ModifyFormInst form;
+    ModifyFormInstructor form;
 
-    public AdminViewInst() {
-        instructors.add(new Instructor(200L, "Darwin", "Nunezm", "darwin@gmail.com", 1));
-        instructors.add(new Instructor(201L, "Michael", "Thomas", "michael@gmail.com", 2));
-        instructors.add(new Instructor(202L, "Einstein", "Brooks", "einstein@gmail.com", 3));
-        instructors.add(new Instructor(203L, "Leonhard", "Euler", "leonhard@gmail.com", 4));
-        instructors.add(new Instructor(204L, "William", "Shakespeare", "william@gmail.com", 5));
 
+    public InstructorList(InstructorRepository instructorRepository){
+        this.instructorRepository = instructorRepository;
         setSizeFull();
         gridConfigure();
         formConfigure();
@@ -46,11 +45,10 @@ public class AdminViewInst extends VerticalLayout {
     private void closeForm() {
         form.setInstructor(null);
         form.setVisible(false);
-
     }
 
     private void updateGrid() {
-        grid.setItems(instructors);
+        grid.setItems(instructorRepository.findAll());
     }
 
     private Component gridForm() {
@@ -63,22 +61,22 @@ public class AdminViewInst extends VerticalLayout {
 
     //Sidebar
     private void formConfigure() {
-        form = new ModifyFormInst();
+        form = new ModifyFormInstructor();
         form.setWidth("25em");
 
-        form.addListener(ModifyFormInst.SaveEvent.class, this::saveInstructor);
-        form.addListener(ModifyFormInst.DeleteEvent.class, this::deleteInstructor);
-        form.addListener(ModifyFormInst.CloseEvent.class, e -> closeForm());
+        form.addListener(ModifyFormInstructor.SaveEvent.class, this::saveInstructor);
+        form.addListener(ModifyFormInstructor.DeleteEvent.class, this::deleteInstructor);
+        form.addListener(ModifyFormInstructor.CloseEvent.class, e -> closeForm());
     }
 
-    private void deleteInstructor(ModifyFormInst.DeleteEvent event) {
-        instructors.remove(event.getInstructor());
+    private void deleteInstructor(ModifyFormInstructor.DeleteEvent event) {
+        instructorRepository.delete(event.getInstructor());
         updateGrid();
         closeForm();
     }
 
-    private void saveInstructor(ModifyFormInst.SaveEvent event) {
-        instructors.add(event.getInstructor());
+    private void saveInstructor(ModifyFormInstructor.SaveEvent event) {
+        instructorRepository.save(event.getInstructor());
         updateGrid();
         closeForm();
     }
@@ -89,10 +87,11 @@ public class AdminViewInst extends VerticalLayout {
         search.setValueChangeMode(ValueChangeMode.LAZY);
 
         Button studNavigationButton = new Button("Student", event-> UI.getCurrent().navigate("/Admin/student"));
+        Button courseNavigationButton = new Button("Course", event-> UI.getCurrent().navigate("/Admin/course"));
         Button addInstructorButton = new Button("Add Instructor");
         addInstructorButton.addClickListener(e -> addInstructor());
 
-        HorizontalLayout toolbar = new HorizontalLayout(studNavigationButton, search, addInstructorButton);
+        HorizontalLayout toolbar = new HorizontalLayout(studNavigationButton,courseNavigationButton, search, addInstructorButton);
 
         return toolbar;
     }
@@ -104,15 +103,13 @@ public class AdminViewInst extends VerticalLayout {
 
     private void gridConfigure() {
         grid.setSizeFull();
-        grid.addColumn(Instructor::getInstID).setHeader("Instructor ID");
-        grid.addColumn(Instructor::getfName).setHeader("First Name");
-        grid.addColumn(Instructor::getlName).setHeader("Last Name");
+        grid.addColumn(Instructor::getId).setHeader("Instructor ID");
+        grid.addColumn(Instructor::getFName).setHeader("First Name");
+        grid.addColumn(Instructor::getLName).setHeader("Last Name");
         grid.addColumn(Instructor::getEmail).setHeader("Email");
         grid.addColumn(Instructor:: getCourseID).setHeader("Course ID");
         grid.getColumns().forEach(col -> col.setAutoWidth(TRUE));
-
         grid.asSingleSelect().addValueChangeListener(e -> editInstructor(e.getValue()));
-
     }
 
     private void editInstructor(Instructor instructor) {

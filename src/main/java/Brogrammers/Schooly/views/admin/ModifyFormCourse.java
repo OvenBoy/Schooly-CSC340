@@ -1,5 +1,6 @@
 package Brogrammers.Schooly.views.admin;
 
+import Brogrammers.Schooly.Entity.Course;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
@@ -12,32 +13,22 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
-import data.entity.Instructor;
 
-
-public class ModifyFormInst extends FormLayout {
-    Binder<Instructor> binder = new BeanValidationBinder<>(Instructor.class);
-    TextField instID = new TextField("Instructor ID");
-    TextField fName = new TextField("First name");
-    TextField lName = new TextField("Last name");
-    TextField email = new TextField("Email");
-
-    TextField courseID = new TextField("Course ID");
+public class ModifyFormCourse extends FormLayout {
+    Binder<Course> binder = new BeanValidationBinder<>(Course.class);
+    TextField name = new TextField("Course Name");
 
     Button save = new Button("Save");
     Button delete = new Button("Delete");
     Button cancel = new Button("Cancel");
-    private Instructor instructor;
 
-    public ModifyFormInst() {
-        add(instID, fName, lName, email, courseID, editButtons());
+    private Course course;
+
+    public ModifyFormCourse() {
+        add(name, editButtons());
         binder.bindInstanceFields(this);
     }
 
-    public void setInstructor(Instructor instructor){
-        this.instructor = instructor;
-        binder.readBean(instructor);
-    }
     private HorizontalLayout editButtons() {
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
@@ -47,51 +38,54 @@ public class ModifyFormInst extends FormLayout {
         cancel.addClickShortcut(Key.ESCAPE);
 
         save.addClickListener(event -> validateAndSave());
-        delete.addClickListener(event -> fireEvent(new DeleteEvent(this, instructor)));
-        cancel.addClickListener(event -> fireEvent(new CloseEvent(this)));
+        delete.addClickListener(event -> fireEvent(new ModifyFormCourse.DeleteEvent(this, course)));
+        cancel.addClickListener(event -> fireEvent(new ModifyFormCourse.CloseEvent(this)));
 
         return new HorizontalLayout(save, delete, cancel);
-
     }
 
     private void validateAndSave() {
         try {
-            binder.writeBean(instructor);
-            fireEvent(new SaveEvent(this, instructor));
+            binder.writeBean(course);
+            fireEvent(new ModifyFormCourse.SaveEvent(this, course));
         } catch (ValidationException e) {
             throw new RuntimeException(e);
         }
     }
 
-    // Events
-    public static abstract class ModifyFormInstEvent extends ComponentEvent<ModifyFormInst> {
-        private Instructor instructor;
+    public void setCourse(Course course) {
+        this.course = course;
+        binder.readBean(course);
+    }
 
-        protected ModifyFormInstEvent(ModifyFormInst source, Instructor instructor) {
+    public static abstract class ModifyFormCourseEvent extends ComponentEvent<ModifyFormCourse> {
+        private Course course;
+
+        protected ModifyFormCourseEvent(ModifyFormCourse source, Course course) {
             super(source, false);
-            this.instructor = instructor;
+            this.course = course;
         }
 
-        public Instructor getInstructor() {
-            return instructor;
-        }
-    }
-
-    public static class SaveEvent extends ModifyFormInstEvent {
-        SaveEvent(ModifyFormInst source, Instructor instructor) {
-            super(source, instructor);
+        public Course getCourse() {
+            return course;
         }
     }
 
-    public static class DeleteEvent extends ModifyFormInstEvent {
-        DeleteEvent(ModifyFormInst source, Instructor instructor) {
-            super(source, instructor);
+    public static class SaveEvent extends ModifyFormCourse.ModifyFormCourseEvent {
+        SaveEvent(ModifyFormCourse source, Course course) {
+            super(source, course);
+        }
+    }
+
+    public static class DeleteEvent extends ModifyFormCourse.ModifyFormCourseEvent {
+        DeleteEvent(ModifyFormCourse source, Course course) {
+            super(source, course);
         }
 
     }
 
-    public static class CloseEvent extends ModifyFormInstEvent {
-        CloseEvent(ModifyFormInst source) {
+    public static class CloseEvent extends ModifyFormCourse.ModifyFormCourseEvent {
+        CloseEvent(ModifyFormCourse source) {
             super(source, null);
         }
     }
@@ -100,4 +94,5 @@ public class ModifyFormInst extends FormLayout {
                                                                   ComponentEventListener<T> listener) {
         return getEventBus().addListener(eventType, listener);
     }
+
 }

@@ -1,7 +1,8 @@
 package Brogrammers.Schooly.views.admin;
 
+import Brogrammers.Schooly.Entity.Student;
+import Brogrammers.Schooly.Repository.StudentRepository;
 import com.vaadin.flow.component.Component;
-
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -13,35 +14,23 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-import data.entity.Student;
 
 import javax.annotation.security.RolesAllowed;
-import java.util.ArrayList;
 
 import static java.lang.Boolean.TRUE;
 
-@RolesAllowed("ROLE_ADMIN")
+//@RolesAllowed("ROLE_ADMIN")
 @PageTitle("Admin-Student")
 @Route(value="/Admin/student")
-public class AdminViewStud extends VerticalLayout {
-    ArrayList<Student> students = new ArrayList<>(5);
+@RolesAllowed("ROLE_ADMIN")
+public class StudentList extends VerticalLayout {
+    StudentRepository studentRepository;
     Grid<Student> grid = new Grid<>();
     TextField search = new TextField();
-    ModifyFormStud form;
+    ModifyFormStudent form;
 
-    public AdminViewStud(){
-
-        students.add(new Student(300L,"Claire","Ellison","claire.ellison@schooly.com"));
-        students.add(new Student(301L,"Dorothy","White","dorothy.white@schooly.com"));
-        students.add(new Student(302L,"Christian","Fraser","christian.fraser@schooly.com"));
-        students.add(new Student(303L,"Keith","Marshall","keith.marshall@schooly.com"));
-        students.add(new Student(304L,"Paul","Skinner","paul.skinner@schooly.com"));
-        students.add(new Student(305L,"Joshua","Taylor","joshua.taylor@schooly.com"));
-        students.add(new Student(306L,"Steven","Dowd","steven.dowd@schooly.com"));
-        students.add(new Student(307L,"Alexandra","Butler","alexandra.butler@schooly.com"));
-        students.add(new Student(308L,"Rachel","Jones","rachel.jones@schooly.com"));
-        students.add(new Student(309L,"Stewart","Carr","stewart.carr@schooly.com"));
-
+    public StudentList(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
         setSizeFull();
         gridConfigure();
         formConfigure();
@@ -58,7 +47,7 @@ public class AdminViewStud extends VerticalLayout {
     }
 
     private void updateGrid() {
-        grid.setItems(students);
+        grid.setItems(studentRepository.findAll());
     }
 
 
@@ -72,22 +61,22 @@ public class AdminViewStud extends VerticalLayout {
 
     //Sidebar
     private void formConfigure() {
-        form = new ModifyFormStud();
+        form = new ModifyFormStudent();
         form.setWidth("25em");
 
-        form.addListener(ModifyFormStud.SaveEvent.class, this::saveStudent);
-        form.addListener(ModifyFormStud.DeleteEvent.class, this::deleteStudent);
-        form.addListener(ModifyFormStud.CloseEvent.class, e -> closeForm());
+        form.addListener(ModifyFormStudent.SaveEvent.class, this::saveStudent);
+        form.addListener(ModifyFormStudent.DeleteEvent.class, this::deleteStudent);
+        form.addListener(ModifyFormStudent.CloseEvent.class, e -> closeForm());
     }
 
-    private void deleteStudent(ModifyFormStud.DeleteEvent event) {
-        students.remove(event.getStudent());
+    private void deleteStudent(ModifyFormStudent.DeleteEvent event) {
+        studentRepository.delete(event.getStudent());
         updateGrid();
         closeForm();
     }
 
-    private void saveStudent(ModifyFormStud.SaveEvent event) {
-        students.add(event.getStudent());
+    private void saveStudent(ModifyFormStudent.SaveEvent event) {
+        studentRepository.save(event.getStudent());
         updateGrid();
         closeForm();
     }
@@ -96,11 +85,12 @@ public class AdminViewStud extends VerticalLayout {
         search.setPlaceholder("Search...");
         search.setClearButtonVisible(true);
         search.setValueChangeMode(ValueChangeMode.LAZY);
+        Button courseNavigationButton = new Button("Course", event-> UI.getCurrent().navigate("/Admin/course"));
         Button instNavigationButton = new Button("Instructor", event-> UI.getCurrent().navigate("/Admin/instructor"));
         Button addStudentButton = new Button("Add Student");
         addStudentButton.addClickListener(e -> addStudent());
 
-        HorizontalLayout toolbar = new HorizontalLayout(instNavigationButton, search, addStudentButton);
+        HorizontalLayout toolbar = new HorizontalLayout(instNavigationButton,courseNavigationButton, search, addStudentButton);
 
         return toolbar;
     }
@@ -112,9 +102,9 @@ public class AdminViewStud extends VerticalLayout {
 
     private void gridConfigure() {
         grid.setSizeFull();
-        grid.addColumn(Student::getStudID).setHeader("Student ID");
-        grid.addColumn(Student::getfName).setHeader("First Name");
-        grid.addColumn(Student::getlName).setHeader("Last Name");
+        grid.addColumn(Student::getId).setHeader("Student ID");
+        grid.addColumn(Student::getFName).setHeader("First Name");
+        grid.addColumn(Student::getLName).setHeader("Last Name");
         grid.addColumn(Student::getEmail).setHeader("Email");
 
         grid.getColumns().forEach(col -> col.setAutoWidth(TRUE));
@@ -134,3 +124,4 @@ public class AdminViewStud extends VerticalLayout {
     }
 
 }
+
