@@ -1,5 +1,6 @@
 package Brogrammers.Schooly.views.admin;
 
+import Brogrammers.Schooly.Entity.Course;
 import Brogrammers.Schooly.Entity.Instructor;
 import Brogrammers.Schooly.Repository.InstructorRepository;
 import com.vaadin.flow.component.Component;
@@ -48,7 +49,7 @@ public class InstructorList extends VerticalLayout {
     }
 
     private void updateGrid() {
-        grid.setItems(instructorRepository.findAll());
+        grid.setItems(instructorRepository.search(search.getValue()));
     }
 
     private Component gridForm() {
@@ -85,6 +86,7 @@ public class InstructorList extends VerticalLayout {
         search.setPlaceholder("Search...");
         search.setClearButtonVisible(true);
         search.setValueChangeMode(ValueChangeMode.LAZY);
+        search.addValueChangeListener(e -> updateGrid());
 
         Button studNavigationButton = new Button("Student", event-> UI.getCurrent().navigate("/Admin/student"));
         Button courseNavigationButton = new Button("Course", event-> UI.getCurrent().navigate("/Admin/course"));
@@ -108,6 +110,7 @@ public class InstructorList extends VerticalLayout {
         grid.addColumn(Instructor::getLName).setHeader("Last Name");
         grid.addColumn(Instructor::getEmail).setHeader("Email");
         grid.addColumn(Instructor:: getCourseID).setHeader("Course ID");
+
         grid.getColumns().forEach(col -> col.setAutoWidth(TRUE));
         grid.asSingleSelect().addValueChangeListener(e -> editInstructor(e.getValue()));
     }

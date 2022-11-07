@@ -21,6 +21,7 @@ public class AssignmentId implements Serializable {
     @Column(name = "name", nullable = false, length = 20)
     private String name;
 
+
     public Integer getCourseID() {
         return courseID;
     }

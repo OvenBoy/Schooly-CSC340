@@ -47,7 +47,7 @@ public class StudentList extends VerticalLayout {
     }
 
     private void updateGrid() {
-        grid.setItems(studentRepository.findAll());
+        grid.setItems(studentRepository.search(search.getValue()));
     }
 
 
@@ -85,6 +85,8 @@ public class StudentList extends VerticalLayout {
         search.setPlaceholder("Search...");
         search.setClearButtonVisible(true);
         search.setValueChangeMode(ValueChangeMode.LAZY);
+        search.addValueChangeListener(e->updateGrid());
+
         Button courseNavigationButton = new Button("Course", event-> UI.getCurrent().navigate("/Admin/course"));
         Button instNavigationButton = new Button("Instructor", event-> UI.getCurrent().navigate("/Admin/instructor"));
         Button addStudentButton = new Button("Add Student");
