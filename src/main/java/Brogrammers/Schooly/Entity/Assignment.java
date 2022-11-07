@@ -17,7 +17,7 @@ public class Assignment {
     private Course courseID;
 
     @Column(name = "dueDate")
-    private LocalDate dueDate;
+    private String dueDate;
 
     @Size(max = 255)
     @Column(name = "description")
@@ -39,11 +39,11 @@ public class Assignment {
         this.courseID = courseID;
     }
 
-    public LocalDate getDueDate() {
+    public String getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(LocalDate dueDate) {
+    public void setDueDate(String dueDate) {
         this.dueDate = dueDate;
     }
 
