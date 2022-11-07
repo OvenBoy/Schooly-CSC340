@@ -1,11 +1,12 @@
 package Brogrammers.Schooly.views.admin;
 
-import Brogrammers.Schooly.Entity.Course;
 import Brogrammers.Schooly.Entity.Instructor;
 import Brogrammers.Schooly.Repository.InstructorRepository;
+import Brogrammers.Schooly.views.SecurityService;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -25,6 +26,7 @@ import static java.lang.Boolean.TRUE;
 @RolesAllowed("ROLE_ADMIN")
 public class InstructorList extends VerticalLayout {
 
+    private final SecurityService securityService;
     InstructorRepository instructorRepository;
     Grid<Instructor> grid = new Grid<>();
 
@@ -32,11 +34,13 @@ public class InstructorList extends VerticalLayout {
     ModifyFormInstructor form;
 
 
-    public InstructorList(InstructorRepository instructorRepository){
+    public InstructorList(SecurityService securityService, InstructorRepository instructorRepository){
+        this.securityService = securityService;
         this.instructorRepository = instructorRepository;
         setSizeFull();
         gridConfigure();
         formConfigure();
+
         add(new H1("Schooly"), toolbarConfigure(), gridForm());
 
         updateGrid();
@@ -91,9 +95,11 @@ public class InstructorList extends VerticalLayout {
         Button studNavigationButton = new Button("Student", event-> UI.getCurrent().navigate("/Admin/student"));
         Button courseNavigationButton = new Button("Course", event-> UI.getCurrent().navigate("/Admin/course"));
         Button addInstructorButton = new Button("Add Instructor");
+        Button logout = new Button("Log out", e -> this.securityService.logout());
+        logout.addThemeVariants(ButtonVariant.LUMO_ERROR);
         addInstructorButton.addClickListener(e -> addInstructor());
 
-        HorizontalLayout toolbar = new HorizontalLayout(studNavigationButton,courseNavigationButton, search, addInstructorButton);
+        HorizontalLayout toolbar = new HorizontalLayout(studNavigationButton,courseNavigationButton, search, addInstructorButton, logout);
 
         return toolbar;
     }

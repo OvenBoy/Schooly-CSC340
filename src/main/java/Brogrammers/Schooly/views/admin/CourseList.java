@@ -2,9 +2,11 @@ package Brogrammers.Schooly.views.admin;
 
 import Brogrammers.Schooly.Entity.Course;
 import Brogrammers.Schooly.Repository.CourseRepository;
+import Brogrammers.Schooly.views.SecurityService;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -26,10 +28,12 @@ public class CourseList extends VerticalLayout {
     Grid<Course> grid = new Grid<>();
     TextField search = new TextField();
     ModifyFormCourse form;
+    private final SecurityService securityService;
 
 
-    public CourseList(CourseRepository courseRepository) {
+    public CourseList(CourseRepository courseRepository, SecurityService securityService) {
         this.courseRepository = courseRepository;
+        this.securityService = securityService;
         setSizeFull();
         gridConfigure();
         formConfigure();
@@ -53,9 +57,11 @@ public class CourseList extends VerticalLayout {
         Button instNavigationButton = new Button("Instructor", event-> UI.getCurrent().navigate("/Admin/instructor"));
         Button studNavigationButton = new Button("Student", event-> UI.getCurrent().navigate("/Admin/student"));
         Button addCourseButton = new Button("Add Course");
+        Button logout = new Button("Log out", e -> this.securityService.logout());
+        logout.addThemeVariants(ButtonVariant.LUMO_ERROR);
         addCourseButton.addClickListener(e -> addCourse());
 
-        HorizontalLayout toolbar = new HorizontalLayout(instNavigationButton,studNavigationButton, search, addCourseButton);
+        HorizontalLayout toolbar = new HorizontalLayout(instNavigationButton,studNavigationButton, search, addCourseButton, logout);
 
         return toolbar;
     }
