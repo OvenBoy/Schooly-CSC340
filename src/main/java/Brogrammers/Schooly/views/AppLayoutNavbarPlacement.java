@@ -11,6 +11,8 @@ import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.RouterLink;
@@ -28,15 +30,18 @@ public class AppLayoutNavbarPlacement extends AppLayout {
         this.securityService = securityService;
         DrawerToggle toggle = new DrawerToggle();
 
-        H1 title = new H1("Schooly Teacher ");
+        H1 title = new H1("Schooly Teacher View");
         title.getStyle().set("font-size", "var(--lumo-font-size-l)").set("margin", "0");
         Button logout = new Button("Log out", e -> securityService.logout());
-
+        HorizontalLayout config = new HorizontalLayout(toggle, title, logout);
+        config.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
+        config.expand(title);
+        config.setWidth("97%");
 
         Tabs tabs = getTabs();
 
         addToDrawer(tabs);
-        addToNavbar(toggle, title, logout);
+        addToNavbar(config);
     }
 
     /*
