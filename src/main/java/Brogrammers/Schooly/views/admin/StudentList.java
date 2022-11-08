@@ -8,17 +8,20 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.H6;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.json.JSONException;
 
 
 import javax.annotation.security.RolesAllowed;
 
+import static Brogrammers.Schooly.API.getWeather;
 import static java.lang.Boolean.TRUE;
 
 //@RolesAllowed("ROLE_ADMIN")
@@ -32,13 +35,20 @@ public class StudentList extends VerticalLayout {
     ModifyFormStudent form;
     private final SecurityService securityService;
 
-    public StudentList(StudentRepository studentRepository, SecurityService securityService) {
+    public StudentList(StudentRepository studentRepository, SecurityService securityService) throws JSONException {
         this.studentRepository = studentRepository;
         this.securityService = securityService;
         setSizeFull();
         gridConfigure();
         formConfigure();
-        add(new H1("Schooly"), toolbarConfigure(), gridForm());
+//        String api = "Welcome admin! " + getWeather();
+        String api = "Weather";
+        HorizontalLayout headers = new HorizontalLayout(new H2("Schooly"), new H6(api));
+        headers.setAlignItems(Alignment.BASELINE);
+        headers.setSpacing(TRUE);
+        headers.setMargin(TRUE);
+
+        add(headers, toolbarConfigure(), gridForm());
 
         updateGrid();
         closeForm();

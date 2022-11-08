@@ -10,6 +10,7 @@ import java.util.List;
 public interface InstructorRepository extends JpaRepository<Instructor, Integer> {
     @Query("select i from Instructor i " +
             "where lower(i.fName) like lower(concat('%', :searchTerm, '%')) " +
-            "or lower(i.lName) like lower(concat('%', :searchTerm, '%'))")
+            "or lower(i.lName) like lower(concat('%', :searchTerm, '%'))" +
+            "or lower(i.courseName) like lower(concat('%', :searchTerm, '%') ) ")
     List<Instructor> search(@Param("searchTerm") String searchTerm);
 }

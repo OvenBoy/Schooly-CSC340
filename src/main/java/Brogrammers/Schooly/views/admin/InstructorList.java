@@ -8,17 +8,22 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.H6;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.json.JSONException;
 
 
 import javax.annotation.security.RolesAllowed;
 
+import java.io.IOException;
+
+import static Brogrammers.Schooly.API.getWeather;
 import static java.lang.Boolean.TRUE;
 
 @PageTitle("Admin-Instructor")
@@ -34,14 +39,20 @@ public class InstructorList extends VerticalLayout {
     ModifyFormInstructor form;
 
 
-    public InstructorList(SecurityService securityService, InstructorRepository instructorRepository){
+    public InstructorList(SecurityService securityService, InstructorRepository instructorRepository) throws JSONException, IOException, InterruptedException {
         this.securityService = securityService;
         this.instructorRepository = instructorRepository;
         setSizeFull();
         gridConfigure();
         formConfigure();
+        String api = "Welcome admin! " + getWeather();
+//        String api = "Weather";
+        HorizontalLayout headers = new HorizontalLayout(new H2("Schooly"), new H6(api));
+        headers.setAlignItems(Alignment.BASELINE);
+        headers.setSpacing(TRUE);
+        headers.setMargin(TRUE);
 
-        add(new H1("Schooly"), toolbarConfigure(), gridForm());
+        add(headers, toolbarConfigure(), gridForm());
 
         updateGrid();
         closeForm();
@@ -116,6 +127,7 @@ public class InstructorList extends VerticalLayout {
         grid.addColumn(Instructor::getLName).setHeader("Last Name");
         grid.addColumn(Instructor::getEmail).setHeader("Email");
         grid.addColumn(Instructor:: getCourseID).setHeader("Course ID");
+        grid.addColumn(Instructor::getCourseName).setHeader("Course Name");
 
         grid.getColumns().forEach(col -> col.setAutoWidth(TRUE));
         grid.asSingleSelect().addValueChangeListener(e -> editInstructor(e.getValue()));

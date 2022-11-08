@@ -24,13 +24,15 @@ public class ModifyFormInstructor extends FormLayout {
 
     TextField courseID = new TextField("Course ID");
 
+    TextField courseName = new TextField("Course Name");
+
     Button save = new Button("Save");
     Button delete = new Button("Delete");
     Button cancel = new Button("Cancel");
     private Instructor instructor;
 
     public ModifyFormInstructor() {
-        add(fName, lName, email, courseID, editButtons());
+        add(fName, lName, email, courseID, courseName, editButtons());
         binder.bindInstanceFields(this);
     }
 

@@ -35,6 +35,11 @@ public class Instructor {
     @Column(name = "courseID")
     private Integer courseID;
 
+    @Size(max = 20)
+    @Basic(fetch = FetchType.LAZY)
+    @Column(name = "course_name", length = 20)
+    private String courseName;
+
     public Instructor() {
     }
 
@@ -42,11 +47,20 @@ public class Instructor {
         return id;
     }
 
-    public Instructor(String fName, String lName, String email, Integer courseID) {
+    public Instructor(String fName, String lName, String email, Integer courseID, String courseName) {
         this.fName = fName;
         this.lName = lName;
         this.email = email;
         this.courseID = courseID;
+        this.courseName = courseName;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 
     public void setId(Integer id) {
