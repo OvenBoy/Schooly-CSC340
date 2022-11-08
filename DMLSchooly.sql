@@ -6,11 +6,11 @@ values
 
 insert into instructor
 values
-(200, 'Darwin', 'Nunezm', 'darwin@gmail.com', 1),
-(201, 'Michael','Thomas','michael@gmail.com', 2),
-(202, 'Einstein','Brooks','einstein@gmail.com',3),
-(203, 'Leonhard','Euler','leonhard@gmail.com',4),
-(204, 'William','Shakespeare','william@gmail.com',5);
+(200, 'Darwin', 'Nunezm', 'darwin@gmail.com', 1, 'Biology'),
+(201, 'Michael','Thomas','michael@gmail.com', 2,'Chemistry'),
+(202, 'Einstein','Brooks','einstein@gmail.com',3, 'Physics'),
+(203, 'Leonhard','Euler','leonhard@gmail.com',4, 'Math'),
+(204, 'William','Shakespeare','william@gmail.com',5,'English');
 
 insert into student
 values
