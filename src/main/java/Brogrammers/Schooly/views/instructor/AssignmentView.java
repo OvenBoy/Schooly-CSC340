@@ -1,8 +1,6 @@
 package Brogrammers.Schooly.views.instructor;
 
 import Brogrammers.Schooly.Entity.Assignment;
-import Brogrammers.Schooly.Entity.AssignmentId;
-import Brogrammers.Schooly.Entity.Course;
 import Brogrammers.Schooly.Repository.AssignmentRepository;
 import Brogrammers.Schooly.views.AppLayoutNavbarPlacement;
 import Brogrammers.Schooly.views.AssigmentForm;
@@ -12,13 +10,9 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 
 import javax.annotation.security.RolesAllowed;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 import static java.lang.Boolean.TRUE;
 
@@ -26,7 +20,7 @@ import static java.lang.Boolean.TRUE;
 @Route(value = "/Assignments", layout = AppLayoutNavbarPlacement.class)
 public class AssignmentView extends VerticalLayout{
     AssignmentRepository assignmentRepository;
-    Grid<Assignment> grid = new Grid<>();
+    Grid<Assignment> grid = new Grid<>(Assignment.class);
     AssigmentForm form;
     public AssignmentView(AssignmentRepository assignmentRepository) {
         this.assignmentRepository = assignmentRepository;
@@ -65,11 +59,7 @@ public class AssignmentView extends VerticalLayout{
         grid.addClassNames("contact-grid");
         grid.setSizeFull();
 
-        grid.addColumn(Assignment::getDescription).setHeader("Description");
-        grid.addColumn(Assignment::getDueDate).setHeader("Due Date");
-
         grid.getColumns().forEach(col -> col.setAutoWidth(TRUE));
-
         grid.asSingleSelect().addValueChangeListener(e -> editAssign(e.getValue()));
     }
 
@@ -113,6 +103,6 @@ public class AssignmentView extends VerticalLayout{
     }
 
     private void updateList() {
-        grid.setItems(assignmentRepository.findAll());
+        grid.setItems(assignmentRepository.search());
     }
 }

@@ -1,22 +1,23 @@
 package Brogrammers.Schooly.Entity;
 
-import net.bytebuddy.asm.Advice;
-
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "assignment")
-public class Assignment {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EmbeddedId
-    private AssignmentId id;
+@IdClass(Assignment.class)
+public class Assignment implements Serializable {
 
-    @MapsId("courseID")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "courseID", nullable = false)
-    private Course courseID;
+    @Id
+    @Column(name = "name")
+    private String name;
+
+    @Id
+    @Basic(fetch = FetchType.LAZY)
+    @Column(name = "courseID")
+    private Integer courseID;
 
     @Column(name = "dueDate")
     private LocalDate dueDate;
@@ -25,26 +26,30 @@ public class Assignment {
     @Column(name = "description")
     private String description;
 
-    public Assignment(Course courseID, LocalDate dueDate) {
+    public Assignment(String name, Integer courseID, LocalDate dueDate, String description) {
+        this.name = name;
         this.courseID = courseID;
         this.dueDate = dueDate;
-    }
-    public Assignment(){}
-
-
-    public AssignmentId getId() {
-        return id;
+        this.description = description;
     }
 
-    public void setId(AssignmentId id) {
-        this.id = id;
+    public Assignment() {
+
     }
 
-    public Course getCourseID() {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getCourseID() {
         return courseID;
     }
 
-    public void setCourseID(Course courseID) {
+    public void setCourseID(Integer courseID) {
         this.courseID = courseID;
     }
 
@@ -63,5 +68,4 @@ public class Assignment {
     public void setDescription(String description) {
         this.description = description;
     }
-
 }

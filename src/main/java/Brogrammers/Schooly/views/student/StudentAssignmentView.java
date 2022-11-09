@@ -1,7 +1,6 @@
 package Brogrammers.Schooly.views.student;
 
 import Brogrammers.Schooly.Entity.Assignment;
-import Brogrammers.Schooly.Entity.AssignmentId;
 import Brogrammers.Schooly.Repository.AssignmentRepository;
 import Brogrammers.Schooly.views.AppLayoutNavbarPlacementStudent;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -52,19 +51,19 @@ public class StudentAssignmentView extends VerticalLayout {
 
     private void updateGrid() {
 
-        grid.setItems(assignmentRepository.search());
+        grid.setItems(assignmentRepository.findAll());
     }
 
-    private ComponentRenderer<AssignmentPageFormLayout, Stu_Assignments> createAssignmentDetailRenderer() {
-        return new ComponentRenderer<>(AssignmentPageFormLayout::new, AssignmentPageFormLayout::setAssignment);
-    }
+//    private ComponentRenderer<AssignmentPageFormLayout, Stu_Assignments> createAssignmentDetailRenderer() {
+//        return new ComponentRenderer<>(AssignmentPageFormLayout::new, AssignmentPageFormLayout::setAssignment);
+//    }
 
     private void configureGrid() {
-        //grid.addClassName("grade-grid");
+        grid.addClassName("grade-grid");
         grid.setSizeFull();
         //grid.setColumns("courseID", "dueDate");
         grid.addColumn(assignment -> assignment.getCourseID()).setHeader("courseID");
-        grid.addColumn(Assignment::getDueDate).setHeader("dueDate");
+        grid.addColumn(assignment -> assignment.getDueDate()).setHeader("dueDate");
 
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
@@ -74,7 +73,7 @@ public class StudentAssignmentView extends VerticalLayout {
 //                GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_ROW_STRIPES);
 
     }
-    private static class AssignmentPageFormLayout extends FormLayout{
+/*    private static class AssignmentPageFormLayout extends FormLayout{
         private final TextField courseTitle = new TextField("Course Title");
         private final TextField assignmentTitle = new TextField("Assignment");
         private final TextField dueDate = new TextField("Due Date");
@@ -110,6 +109,6 @@ public class StudentAssignmentView extends VerticalLayout {
             description.setValue(assignment.getDescription());
 
         }
-    }
+    }*/
 }
 
