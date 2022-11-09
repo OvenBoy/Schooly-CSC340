@@ -7,8 +7,7 @@ import Brogrammers.Schooly.views.instructor.MainTeacherView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
@@ -16,8 +15,11 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.RouterLink;
+import org.json.JSONException;
 
 import javax.annotation.security.PermitAll;
+
+import static Brogrammers.Schooly.API.getWeather;
 
 /*
 Creates the Navigation bar for the App
@@ -26,13 +28,13 @@ Creates the Navigation bar for the App
 public class AppLayoutNavbarPlacement extends AppLayout {
     private final SecurityService securityService;
 
-    public AppLayoutNavbarPlacement(SecurityService securityService) {
+    public AppLayoutNavbarPlacement(SecurityService securityService) throws JSONException {
         this.securityService = securityService;
         DrawerToggle toggle = new DrawerToggle();
 
         H1 title = new H1("Schooly Teacher View ");
-        H1 weather = new H1("Weather");
-        //H1 weather = new H1("getWeather()");
+        H2 weather = new H2("Weather");
+        //H1 weather = new H1(getWeather());
 
         title.getStyle().set("font-size", "var(--lumo-font-size-l)").set("margin", "0");
         weather.getStyle().set("font-size", "var(--lumo-font-size-l)").set("margin", "0");
