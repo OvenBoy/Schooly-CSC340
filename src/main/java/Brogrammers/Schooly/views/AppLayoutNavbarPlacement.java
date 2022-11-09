@@ -30,12 +30,17 @@ public class AppLayoutNavbarPlacement extends AppLayout {
         this.securityService = securityService;
         DrawerToggle toggle = new DrawerToggle();
 
-        H1 title = new H1("Schooly Teacher View");
+        H1 title = new H1("Schooly Teacher View ");
+        H1 weather = new H1("Weather");
+        //H1 weather = new H1("getWeather()");
+
         title.getStyle().set("font-size", "var(--lumo-font-size-l)").set("margin", "0");
+        weather.getStyle().set("font-size", "var(--lumo-font-size-l)").set("margin", "0");
+
         Button logout = new Button("Log out", e -> securityService.logout());
-        HorizontalLayout config = new HorizontalLayout(toggle, title, logout);
+        HorizontalLayout config = new HorizontalLayout(toggle, title, weather, logout);
         config.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
-        config.expand(title);
+        config.expand(weather);
         config.setWidth("97%");
 
         Tabs tabs = getTabs();

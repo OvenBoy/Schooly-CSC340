@@ -15,24 +15,25 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
 
-import java.util.Date;
-import java.util.List;
-
 public class AssigmentForm extends FormLayout {
     private Assignment assignment;
-    TextField description = new TextField("Assignment Details");
     Binder<Assignment> binder = new BeanValidationBinder<>(Assignment.class);
-    TextField assignmentName = new TextField("Assignment Name");
-    TextField assignmentDetails = new TextField("Assignment Details");
+
+    //Text fields
+    TextField courseID = new TextField("Course ID");
+
+    TextField name = new TextField("Assignment Name");
+    TextField description = new TextField("Assignment Details");
     DatePicker dueDate = new DatePicker("Due Date");
 
+    //Button declarations
     Button save = new Button("Save");
     Button delete = new Button("Delete");
     Button close = new Button("Cancel");
 
     public AssigmentForm() {
         addClassName("Assignment-form");
-        add(description,dueDate,createButtonsLayout());
+        add(name,courseID,description,dueDate,createButtonsLayout());
         binder.bindInstanceFields(this);
     }
 
