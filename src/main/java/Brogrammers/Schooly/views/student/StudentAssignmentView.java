@@ -31,7 +31,7 @@ import java.util.stream.Stream;
 @PageTitle("Assignments | Schooly")
 @RolesAllowed("ROLE_STUDENT")
 public class StudentAssignmentView extends VerticalLayout {
-    protected Grid<Assignment> grid = new Grid<>(Assignment.class);
+    protected Grid<Assignment> grid = new Grid<>();
     protected H2 currentPage = new H2("Assignments");
     AssignmentRepository assignmentRepository;
 
@@ -40,19 +40,14 @@ public class StudentAssignmentView extends VerticalLayout {
         addClassName("stu-assignment-view");
         setSizeFull();
         configureGrid();
-        updateGrid();
 
         //grid.setItemDetailsRenderer(createAssignmentDetailRenderer());
 
-//        grid.setItems(assignments);
-
         add(currentPage, new Hr() ,grid);
+        updateGrid();
     }
 
-    private void updateGrid() {
 
-        grid.setItems(assignmentRepository.findAll());
-    }
 
 //    private ComponentRenderer<AssignmentPageFormLayout, Stu_Assignments> createAssignmentDetailRenderer() {
 //        return new ComponentRenderer<>(AssignmentPageFormLayout::new, AssignmentPageFormLayout::setAssignment);
@@ -61,19 +56,23 @@ public class StudentAssignmentView extends VerticalLayout {
     private void configureGrid() {
         grid.addClassName("grade-grid");
         grid.setSizeFull();
-        //grid.setColumns("courseID", "dueDate");
-        grid.addColumn(assignment -> assignment.getCourseID()).setHeader("courseID");
-        grid.addColumn(assignment -> assignment.getDueDate()).setHeader("dueDate");
+        grid.addColumn(Assignment::getClass).setHeader("Course");
+        grid.addColumn(Assignment::getDueDate).setHeader("Due Date");
+        grid.addColumn(Assignment::getDescription).setHeader("Description");
 
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         //grid.setSortableColumns("dueDate");
-        //grid.setMultiSort(true);
-//        grid.addThemeVariants(GridVariant.LUMO_NO_ROW_BORDERS,
-//                GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_ROW_STRIPES);
+        grid.setMultiSort(true);
+        grid.addThemeVariants(GridVariant.LUMO_NO_ROW_BORDERS,
+                GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_ROW_STRIPES);
 
     }
-/*    private static class AssignmentPageFormLayout extends FormLayout{
+    private void updateGrid() {
+
+        grid.setItems(assignmentRepository.findAll());
+    }
+    private static class AssignmentPageFormLayout extends FormLayout{
         private final TextField courseTitle = new TextField("Course Title");
         private final TextField assignmentTitle = new TextField("Assignment");
         private final TextField dueDate = new TextField("Due Date");
@@ -109,6 +108,6 @@ public class StudentAssignmentView extends VerticalLayout {
             description.setValue(assignment.getDescription());
 
         }
-    }*/
+    }
 }
 
