@@ -1,5 +1,7 @@
 package Brogrammers.Schooly.Entity;
 
+import net.bytebuddy.asm.Advice;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
@@ -17,11 +19,18 @@ public class Assignment {
     private Course courseID;
 
     @Column(name = "dueDate")
-    private String dueDate;
+    private LocalDate dueDate;
 
     @Size(max = 255)
     @Column(name = "description")
     private String description;
+
+    public Assignment(Course courseID, LocalDate dueDate) {
+        this.courseID = courseID;
+        this.dueDate = dueDate;
+    }
+    public Assignment(){}
+
 
     public AssignmentId getId() {
         return id;
@@ -39,11 +48,11 @@ public class Assignment {
         this.courseID = courseID;
     }
 
-    public String getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(String dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 

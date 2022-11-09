@@ -1,5 +1,8 @@
 package Brogrammers.Schooly.views.student;
 
+import Brogrammers.Schooly.Entity.Assignment;
+import Brogrammers.Schooly.Entity.AssignmentId;
+import Brogrammers.Schooly.Repository.AssignmentRepository;
 import Brogrammers.Schooly.views.AppLayoutNavbarPlacementStudent;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -29,31 +32,27 @@ import java.util.stream.Stream;
 @PageTitle("Assignments | Schooly")
 @RolesAllowed("ROLE_STUDENT")
 public class StudentAssignmentView extends VerticalLayout {
-    protected Grid<Stu_Assignments> grid = new Grid<>(Stu_Assignments.class);
+    protected Grid<Assignment> grid = new Grid<>(Assignment.class);
     protected H2 currentPage = new H2("Assignments");
+    AssignmentRepository assignmentRepository;
 
-    public StudentAssignmentView() {
-        addClassName("list-view");
-
+    public StudentAssignmentView(AssignmentRepository assignmentRepository) {
+        this.assignmentRepository = assignmentRepository;
+        addClassName("stu-assignment-view");
         setSizeFull();
         configureGrid();
+        updateGrid();
 
-        grid.setItemDetailsRenderer(createAssignmentDetailRenderer());
+        //grid.setItemDetailsRenderer(createAssignmentDetailRenderer());
 
-        String testDesc = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.";
-
-        List<Stu_Assignments> assignments = new ArrayList<Stu_Assignments>();
-        assignments.add(new Stu_Assignments("CSC-340", "Project Prototype",
-                "10/20/2022", "11AM", "100", testDesc, "Done"));
-        assignments.add(new Stu_Assignments("CSC-340", "Test-Case Assignment",
-                "10/18/2022", "12AM", "100", testDesc, "in-progress"));
-        assignments.add(new Stu_Assignments("HIS-101", "History Paper 3",
-                "10/18/2022", "1PM", "100",
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", "Done"));
-
-        grid.setItems(assignments);
+//        grid.setItems(assignments);
 
         add(currentPage, new Hr() ,grid);
+    }
+
+    private void updateGrid() {
+
+        grid.setItems(assignmentRepository.search());
     }
 
     private ComponentRenderer<AssignmentPageFormLayout, Stu_Assignments> createAssignmentDetailRenderer() {
@@ -61,14 +60,18 @@ public class StudentAssignmentView extends VerticalLayout {
     }
 
     private void configureGrid() {
-        grid.addClassName("grade-grid");
+        //grid.addClassName("grade-grid");
         grid.setSizeFull();
-        grid.setColumns("courseTitle", "assignmentTitle", "dueDate", "time");
+        //grid.setColumns("courseID", "dueDate");
+        grid.addColumn(assignment -> assignment.getCourseID()).setHeader("courseID");
+        grid.addColumn(Assignment::getDueDate).setHeader("dueDate");
+
+
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         //grid.setSortableColumns("dueDate");
-        grid.setMultiSort(true);
-        grid.addThemeVariants(GridVariant.LUMO_NO_ROW_BORDERS,
-                GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_ROW_STRIPES);
+        //grid.setMultiSort(true);
+//        grid.addThemeVariants(GridVariant.LUMO_NO_ROW_BORDERS,
+//                GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_ROW_STRIPES);
 
     }
     private static class AssignmentPageFormLayout extends FormLayout{
