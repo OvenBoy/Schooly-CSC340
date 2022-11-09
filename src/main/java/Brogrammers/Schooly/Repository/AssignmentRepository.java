@@ -12,4 +12,6 @@ public interface AssignmentRepository extends JpaRepository<Assignment, String> 
     @Query("select i from Assignment i " +
             "where i.courseID = 1")
     List<Assignment> search();
+
+
 }
