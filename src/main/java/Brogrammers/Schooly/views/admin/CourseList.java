@@ -66,12 +66,13 @@ public class CourseList extends VerticalLayout {
         search.addValueChangeListener(e-> updateGrid());
         Button instNavigationButton = new Button("Instructor", event-> UI.getCurrent().navigate("/Admin/instructor"));
         Button studNavigationButton = new Button("Student", event-> UI.getCurrent().navigate("/Admin/student"));
+        Button studCourseNavigationButton = new Button("Student Course", event-> UI.getCurrent().navigate("/Admin/student_course"));
         Button addCourseButton = new Button("Add Course");
         Button logout = new Button("Log out", e -> this.securityService.logout());
         logout.addThemeVariants(ButtonVariant.LUMO_ERROR);
         addCourseButton.addClickListener(e -> addCourse());
 
-        HorizontalLayout toolbar = new HorizontalLayout(instNavigationButton,studNavigationButton, search, addCourseButton, logout);
+        HorizontalLayout toolbar = new HorizontalLayout(instNavigationButton,studNavigationButton, studCourseNavigationButton, search, addCourseButton, logout);
 
         return toolbar;
     }
@@ -114,7 +115,6 @@ public class CourseList extends VerticalLayout {
         courseRepository.save(event.getCourse());
         updateGrid();
         closeForm();
-
     }
 
     private void deleteCourse(ModifyFormCourse.DeleteEvent event) {

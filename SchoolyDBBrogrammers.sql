@@ -65,6 +65,7 @@ create table takes
 (
     studID   int not null,
     courseID int not null,
+
     primary key (studID, courseID),
     constraint takes_ibfk_1
         foreign key (studID) references student (studID),

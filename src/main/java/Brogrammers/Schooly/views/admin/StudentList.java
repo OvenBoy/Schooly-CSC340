@@ -103,12 +103,13 @@ public class StudentList extends VerticalLayout {
 
         Button courseNavigationButton = new Button("Course", event-> UI.getCurrent().navigate("/Admin/course"));
         Button instNavigationButton = new Button("Instructor", event-> UI.getCurrent().navigate("/Admin/instructor"));
+        Button studCourseNavigationButton = new Button("Student Course", event-> UI.getCurrent().navigate("/Admin/student_course"));
         Button addStudentButton = new Button("Add Student");
         Button logout = new Button("Log out", e -> this.securityService.logout());
         logout.addThemeVariants(ButtonVariant.LUMO_ERROR);
         addStudentButton.addClickListener(e -> addStudent());
 
-        HorizontalLayout toolbar = new HorizontalLayout(instNavigationButton,courseNavigationButton, search, addStudentButton, logout);
+        HorizontalLayout toolbar = new HorizontalLayout(instNavigationButton,courseNavigationButton, studCourseNavigationButton, search, addStudentButton, logout);
 
         return toolbar;
     }

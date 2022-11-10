@@ -45,8 +45,8 @@ public class InstructorList extends VerticalLayout {
         setSizeFull();
         gridConfigure();
         formConfigure();
-        String api = "Welcome admin! " + getWeather();
-//        String api = "Weather";
+//        String api = "Welcome admin! " + getWeather();
+        String api = "Weather";
         HorizontalLayout headers = new HorizontalLayout(new H2("Schooly"), new H6(api));
         headers.setAlignItems(Alignment.BASELINE);
         headers.setSpacing(TRUE);
@@ -105,12 +105,13 @@ public class InstructorList extends VerticalLayout {
 
         Button studNavigationButton = new Button("Student", event-> UI.getCurrent().navigate("/Admin/student"));
         Button courseNavigationButton = new Button("Course", event-> UI.getCurrent().navigate("/Admin/course"));
+        Button studCourseNavigationButton = new Button("Student Course", event-> UI.getCurrent().navigate("/Admin/student_course"));
         Button addInstructorButton = new Button("Add Instructor");
         Button logout = new Button("Log out", e -> this.securityService.logout());
         logout.addThemeVariants(ButtonVariant.LUMO_ERROR);
         addInstructorButton.addClickListener(e -> addInstructor());
 
-        HorizontalLayout toolbar = new HorizontalLayout(studNavigationButton,courseNavigationButton, search, addInstructorButton, logout);
+        HorizontalLayout toolbar = new HorizontalLayout(studNavigationButton,courseNavigationButton, studCourseNavigationButton, search, addInstructorButton, logout);
 
         return toolbar;
     }
@@ -118,6 +119,15 @@ public class InstructorList extends VerticalLayout {
     private void addInstructor() {
         grid.asSingleSelect().clear();
         editInstructor(new Instructor());
+    }
+    private void editInstructor(Instructor instructor) {
+        if(instructor == null){
+            closeForm();
+        }
+        else{
+            form.setInstructor(instructor);
+            form.setVisible(true );
+        }
     }
 
     private void gridConfigure() {
@@ -133,13 +143,5 @@ public class InstructorList extends VerticalLayout {
         grid.asSingleSelect().addValueChangeListener(e -> editInstructor(e.getValue()));
     }
 
-    private void editInstructor(Instructor instructor) {
-        if(instructor == null){
-            closeForm();
-        }
-        else{
-            form.setInstructor(instructor);
-            form.setVisible(true );
-        }
-    }
+
 }
