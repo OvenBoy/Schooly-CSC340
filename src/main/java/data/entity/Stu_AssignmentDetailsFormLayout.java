@@ -1,5 +1,6 @@
 package data.entity;
 
+import Brogrammers.Schooly.Entity.Assignment;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.textfield.TextField;
 
@@ -13,7 +14,7 @@ public class Stu_AssignmentDetailsFormLayout extends FormLayout {
         private final TextField possPoints = new TextField("Possible Points");
 
         public Stu_AssignmentDetailsFormLayout(){
-                Stream.of(courseTitle, assignmentTitle, dueDate, time, possPoints)
+                Stream.of(courseTitle, assignmentTitle, dueDate)
                         .forEach(field -> {
                                 field.setReadOnly(true);
                                 add(field);
@@ -23,12 +24,12 @@ public class Stu_AssignmentDetailsFormLayout extends FormLayout {
                 setColspan(assignmentTitle, 3);
         }
 
-        public void setAssignment(Stu_Assignments assignment){
-                courseTitle.setValue(assignment.getCourseTitle());
-                assignmentTitle.setValue(assignment.getAssignmentTitle());
-                dueDate.setValue(assignment.getDueDate());
-                time.setValue(assignment.getTime());
-                possPoints.setValue(assignment.getPossiblePoints());
+        public void setAssignment(Assignment assignment){
+                courseTitle.setValue(assignment.getCourseID().toString());
+                assignmentTitle.setValue(assignment.getName());
+                dueDate.setValue(assignment.getDueDate().toString());
+                //time.setValue(assignment.getTime());
+                //possPoints.setValue(assignment.getPossiblePoints());
 
         }
 

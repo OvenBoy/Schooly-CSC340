@@ -12,4 +12,8 @@ public interface StudAssignRepository extends JpaRepository<StudAssign, Integer>
     @Query("select i from StudAssign i " +
             "where i.courseID = 1")
     List<StudAssign> search();
+
+    @Query("SELECT i FROM StudAssign i " +
+            "WHERE i.studID = 300")
+    List<StudAssign> searchStud();
 }
