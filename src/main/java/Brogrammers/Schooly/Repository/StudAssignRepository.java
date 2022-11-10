@@ -1,6 +1,5 @@
 package Brogrammers.Schooly.Repository;
 
-import Brogrammers.Schooly.Entity.Assignment;
 import Brogrammers.Schooly.Entity.Instructor;
 import Brogrammers.Schooly.Entity.StudAssign;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,7 +13,7 @@ public interface StudAssignRepository extends JpaRepository<StudAssign, Integer>
             "where i.courseID = 1")
     List<StudAssign> search();
 
-    @Query("select i from StudAssign i " +
-            "where i.studID = 300")
-    List<StudAssign> searchstudAssign();
+    @Query("SELECT i FROM StudAssign i " +
+            "WHERE i.studID = 300")
+    List<StudAssign> searchStud();
 }

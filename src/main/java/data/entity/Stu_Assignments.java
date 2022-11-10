@@ -2,6 +2,7 @@ package data.entity;
 
 public class Stu_Assignments {
 
+
     public Stu_Assignments(String courseTitle, String assignmentTitle, String dueDate, String time,
                            String possiblePoints){
         this.courseTitle = courseTitle;

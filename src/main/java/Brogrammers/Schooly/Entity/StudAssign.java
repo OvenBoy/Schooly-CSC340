@@ -26,6 +26,10 @@ public class StudAssign implements Serializable{
         this.name = name;
         this.grade = grade;
     }
+    public StudAssign(String name, Integer grade){
+        this.name = name;
+        this.grade = grade;
+    }
 
     public StudAssign() {
 

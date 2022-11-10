@@ -1,8 +1,9 @@
 package Brogrammers.Schooly.views.student;
 
-import Brogrammers.Schooly.Entity.StudAssign;
+import Brogrammers.Schooly.Entity.Assignment;
+import Brogrammers.Schooly.Entity.Course;
 import Brogrammers.Schooly.Repository.AssignmentRepository;
-import Brogrammers.Schooly.Repository.StudAssignRepository;
+import Brogrammers.Schooly.Repository.CourseRepository;
 import Brogrammers.Schooly.views.AppLayoutNavbarPlacementStudent;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -23,6 +24,7 @@ import data.entity.Stu_Assignments;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import java.security.PrivateKey;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -32,42 +34,39 @@ import java.util.stream.Stream;
 @PageTitle("Assignments | Schooly")
 @RolesAllowed("ROLE_STUDENT")
 public class StudentAssignmentView extends VerticalLayout {
-    StudAssignRepository studAssignRepository;
-    protected Grid<StudAssign> grid = new Grid<>(StudAssign.class);
+    protected Grid<Assignment> grid = new Grid<>();
     protected H2 currentPage = new H2("Assignments");
+    AssignmentRepository assignmentRepository;
+    CourseRepository courseRepo;
 
-    public StudentAssignmentView(StudAssignRepository studAssignRepository) {
-        addClassName("list-view");
-        this.studAssignRepository = studAssignRepository;
+    public StudentAssignmentView(AssignmentRepository assignmentRepository, CourseRepository courseRepo) {
+        this.assignmentRepository = assignmentRepository;
+        this.courseRepo = courseRepo;
+        addClassName("stu-assignment-view");
         setSizeFull();
         configureGrid();
 
-//        grid.setItemDetailsRenderer(createAssignmentDetailRenderer());
-
-//        String testDesc = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.";
-//
-//        List<Stu_Assignments> assignments = new ArrayList<Stu_Assignments>();
-//        assignments.add(new Stu_Assignments("CSC-340", "Project Prototype",
-//                "10/20/2022", "11AM", "100", testDesc, "Done"));
-//        assignments.add(new Stu_Assignments("CSC-340", "Test-Case Assignment",
-//                "10/18/2022", "12AM", "100", testDesc, "in-progress"));
-//        assignments.add(new Stu_Assignments("HIS-101", "History Paper 3",
-//                "10/18/2022", "1PM", "100",
-//                "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", "Done"));
-
-        grid.setItems(studAssignRepository.searchstudAssign());
+        grid.setItemDetailsRenderer(createAssignmentDetailRenderer());
 
         add(currentPage, new Hr() ,grid);
+        updateGrid();
     }
 
-    private ComponentRenderer<AssignmentPageFormLayout, Stu_Assignments> createAssignmentDetailRenderer() {
+
+
+    private ComponentRenderer<AssignmentPageFormLayout, Assignment> createAssignmentDetailRenderer() {
         return new ComponentRenderer<>(AssignmentPageFormLayout::new, AssignmentPageFormLayout::setAssignment);
     }
 
     private void configureGrid() {
-        grid.addClassName("grade-grid");
+        grid.addClassName("assignment-grid");
         grid.setSizeFull();
-//        grid.setColumns("courseTitle", "assignmentTitle", "dueDate", "time");
+        grid.addColumn(Assignment::getName).setHeader("Assignment");
+        grid.addColumn(Assignment::getDescription).setHeader("Description");
+        grid.addColumn(Assignment::getDueDate).setHeader("Due Date");
+        //grid.addColumn(Course::getName).setHeader("Course");
+
+
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         //grid.setSortableColumns("dueDate");
         grid.setMultiSort(true);
@@ -75,39 +74,43 @@ public class StudentAssignmentView extends VerticalLayout {
                 GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_ROW_STRIPES);
 
     }
+    private void updateGrid() {
+        grid.setItems(assignmentRepository.findAll());
+        grid.setItems(assignmentRepository.nameSearch());
+    }
     private static class AssignmentPageFormLayout extends FormLayout{
         private final TextField courseTitle = new TextField("Course Title");
         private final TextField assignmentTitle = new TextField("Assignment");
         private final TextField dueDate = new TextField("Due Date");
-        private final TextField time = new TextField("Due Time");
-        private final TextField possPoints = new TextField("Possible Points");
+//        private final TextField time = new TextField("Due Time");
+//        private final TextField possPoints = new TextField("Possible Points");
         private final TextField description = new TextField("Description");
         private final ComboBox<String> status = new ComboBox<>("Status");
 
         public AssignmentPageFormLayout(){
-            Stream.of(courseTitle, assignmentTitle, status, dueDate, time, possPoints, description)
+            Stream.of(courseTitle, assignmentTitle, dueDate, description)
                     .forEach(field -> {
                         field.setReadOnly(true);
-                        status.setReadOnly(false);
-                        status.setItems("Done", "In-progress");
+//                        status.setReadOnly(false);
+//                        status.setItems("Done", "In-progress");
                         add(field);
                     });
             setResponsiveSteps(new ResponsiveStep("0", 3));
             setColspan(courseTitle, 1);
             setColspan(assignmentTitle, 1);
-            setColspan(status, 1);
+            //setColspan(status, 1);
             setColspan(dueDate, 1);
             setColspan(description, 3);
             //status.
 
 
         }
-        public void setAssignment(Stu_Assignments assignment){
-            courseTitle.setValue(assignment.getCourseTitle());
-            assignmentTitle.setValue(assignment.getAssignmentTitle());
-            dueDate.setValue(assignment.getDueDate());
-            time.setValue(assignment.getTime());
-            possPoints.setValue(assignment.getPossiblePoints());
+        public void setAssignment(Assignment assignment){
+            courseTitle.setValue(assignment.getCourseID().toString());
+            assignmentTitle.setValue(assignment.getName());
+            dueDate.setValue(assignment.getDueDate().toString());
+            //time.setValue(assignment.getTime());
+            //possPoints.setValue(assignment.getPossiblePoints());
             description.setValue(assignment.getDescription());
 
         }
