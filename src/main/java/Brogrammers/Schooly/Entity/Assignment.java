@@ -32,10 +32,10 @@ public class Assignment implements Serializable {
         this.dueDate = dueDate;
         this.description = description;
     }
-    public Assignment(String name, LocalDate dueDate, String description) {
+    public Assignment(String name, LocalDate dueDate, Integer courseID) {
         this.name = name;
         this.dueDate = dueDate;
-        this.description = description;
+        this.courseID = courseID;
     }
 
     public Assignment() {

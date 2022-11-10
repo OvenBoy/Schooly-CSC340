@@ -17,7 +17,7 @@ public class Course {
             generator = "course_sequence"
     )
     @Column(name = "courseID", nullable = false)
-    private Integer id;
+    private Integer courseID;
 
     @Size(max = 20)
     @Column(name = "name", length = 20)
@@ -31,12 +31,12 @@ public class Course {
 
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getCourseID() {
+        return courseID;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setCourseID(Integer courseID) {
+        this.courseID = courseID;
     }
 
     public String getName() {

@@ -1,5 +1,8 @@
 package Brogrammers.Schooly.views.student;
 
+
+import Brogrammers.Schooly.Entity.StudAssign;
+import Brogrammers.Schooly.Repository.StudAssignRepository;
 import Brogrammers.Schooly.views.AppLayoutNavbarPlacementStudent;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
@@ -11,41 +14,25 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-import data.entity.Stu_Grades;
 
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
-import java.util.ArrayList;
-import java.util.List;
 
 @Route(value = "grades", layout = AppLayoutNavbarPlacementStudent.class)
 @PageTitle("Grades | Schooly")
 @RolesAllowed("ROLE_STUDENT")
 public class StudentGradeView extends VerticalLayout {
-
-    protected Grid<Stu_Grades> grid = new Grid<>(Stu_Grades.class);
+    protected Grid<StudAssign> grid = new Grid<>(StudAssign.class, false);
     protected H2 currentPage = new H2("Grades");
+    StudAssignRepository studAssignRepository;
 
-    public StudentGradeView() {
+    public StudentGradeView(StudAssignRepository studAssignRepository) {
+        this.studAssignRepository = studAssignRepository;
         addClassName("student-grade-view");
         setSizeFull();
         configureGrid();
 
-
-        List<Stu_Grades> grades = new ArrayList<Stu_Grades>();
-        grades.add(new Stu_Grades("CSC-340", "Test-Case Assignment",
-                "90/100", ((90.0 / 100.0) * 100.0)));
-        grades.add(new Stu_Grades("MAT-222", "Exam 2",
-                "92/100", ((92.0 / 100.0) * 100.0)));
-        grades.add(new Stu_Grades("HIS-101","History Assignment",
-                "150/250", ((150.0 / 250.0) * 100.0)));
-
-
-
-
-        grid.setItems(grades);
-
         add(currentPage, new Hr(), grid);
+        updateGrid();
 
     }
     private void configHeader() {
@@ -63,11 +50,17 @@ public class StudentGradeView extends VerticalLayout {
     private void configureGrid() {
         grid.addClassName("grade-grid");
         grid.setSizeFull();
-        grid.setColumns("courseTitle", "assignmentTitle", "fractionGrade", "percentGrade");
+
+        grid.addColumn(StudAssign::getName).setHeader("Assignment");
+        grid.addColumn(StudAssign::getGrade).setHeader("Grade");
+
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.setSortableColumns();
         grid.addThemeVariants(GridVariant.LUMO_NO_ROW_BORDERS,
                 GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_ROW_STRIPES);
+    }
+    private void updateGrid() {
+        grid.setItems(studAssignRepository.searchStud());
     }
 
 }

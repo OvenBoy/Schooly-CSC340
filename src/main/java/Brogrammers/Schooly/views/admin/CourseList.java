@@ -20,7 +20,6 @@ import org.json.JSONException;
 
 import javax.annotation.security.RolesAllowed;
 
-import static Brogrammers.Schooly.API.getWeather;
 import static java.lang.Boolean.TRUE;
 
 @PageTitle("Admin-Course")
@@ -93,7 +92,7 @@ public class CourseList extends VerticalLayout {
 
     private void gridConfigure() {
         grid.setSizeFull();
-        grid.addColumn(Course::getId).setHeader("Course ID");
+        grid.addColumn(Course::getCourseID).setHeader("Course ID");
         grid.addColumn(Course::getName).setHeader("Course Name");
 
         grid.getColumns().forEach(col -> col.setAutoWidth(TRUE));
