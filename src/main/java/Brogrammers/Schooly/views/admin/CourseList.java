@@ -2,14 +2,20 @@ package Brogrammers.Schooly.views.admin;
 
 import Brogrammers.Schooly.Entity.Course;
 import Brogrammers.Schooly.Repository.CourseRepository;
+import Brogrammers.Schooly.Repository.InstructorRepository;
 import Brogrammers.Schooly.views.SecurityService;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H6;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -27,13 +33,15 @@ import static java.lang.Boolean.TRUE;
 @RolesAllowed("ROLE_ADMIN")
 public class CourseList extends VerticalLayout {
     CourseRepository courseRepository;
+    InstructorRepository instructorRepository;
     Grid<Course> grid = new Grid<>();
     TextField search = new TextField();
     ModifyFormCourse form;
     private final SecurityService securityService;
 
 
-    public CourseList(CourseRepository courseRepository, SecurityService securityService) throws JSONException {
+    public CourseList(CourseRepository courseRepository, SecurityService securityService, InstructorRepository instructorRepository) throws JSONException {
+        this.instructorRepository = instructorRepository;
         this.courseRepository = courseRepository;
         this.securityService = securityService;
         setSizeFull();
@@ -102,7 +110,7 @@ public class CourseList extends VerticalLayout {
     }
 
     private void formConfigure() {
-        form = new ModifyFormCourse();
+        form = new ModifyFormCourse(this.courseRepository, this.instructorRepository);
         form.setWidth("25em");
 
         form.addListener(ModifyFormCourse.SaveEvent.class, this::saveCourse);
@@ -130,4 +138,5 @@ public class CourseList extends VerticalLayout {
     private void updateGrid() {
         grid.setItems(courseRepository.search(search.getValue()));
     }
+
 }

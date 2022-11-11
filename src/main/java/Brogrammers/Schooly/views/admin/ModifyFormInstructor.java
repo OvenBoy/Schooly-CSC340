@@ -1,37 +1,49 @@
 package Brogrammers.Schooly.views.admin;
 
+import Brogrammers.Schooly.Entity.Course;
 import Brogrammers.Schooly.Entity.Instructor;
+import Brogrammers.Schooly.Repository.CourseRepository;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.shared.Registration;
 
+import java.util.List;
 
 
 public class ModifyFormInstructor extends FormLayout {
+    CourseRepository courseRepository;
     Binder<Instructor> binder = new BeanValidationBinder<>(Instructor.class);
     TextField fName = new TextField("First name");
     TextField lName = new TextField("Last name");
     TextField email = new TextField("Email");
 
-    TextField courseID = new TextField("Course ID");
+    ComboBox<Integer> courseID = new ComboBox<>("CourseID");
+    ComboBox<String> courseName = new ComboBox<>("Course Name");
 
-    TextField courseName = new TextField("Course Name");
 
     Button save = new Button("Save");
     Button delete = new Button("Delete");
     Button cancel = new Button("Cancel");
     private Instructor instructor;
 
-    public ModifyFormInstructor() {
+    public ModifyFormInstructor(CourseRepository courseRepository) {
+        this.courseRepository = courseRepository;
+        courseName.setAllowCustomValue(true);
+        courseID.setAllowCustomValue(true);
+        setComboBox();
+
+        courseID.addValueChangeListener(e-> courseName.setValue(getCourseNameByID(courseID.getValue())));
         add(fName, lName, email, courseID, courseName, editButtons());
         binder.bindInstanceFields(this);
     }
@@ -102,4 +114,19 @@ public class ModifyFormInstructor extends FormLayout {
                                                                   ComponentEventListener<T> listener) {
         return getEventBus().addListener(eventType, listener);
     }
+
+    private void setComboBox(){
+        courseID.setItems(courseRepository.searchInstructorFreeCourseID());
+        courseName.setItems(courseRepository.searchInstructorFreeCourseName());
+    }
+
+    private String getCourseNameByID(Integer courseID){
+        String s = courseRepository.searchByID(courseID);
+        return s;
+    }
+    private Integer getCourseIDByName(String courseName){
+        Integer i = courseRepository.searchByName(courseName);
+        return i;
+    }
+
 }

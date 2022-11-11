@@ -1,6 +1,7 @@
 package Brogrammers.Schooly.views.admin;
 
 import Brogrammers.Schooly.Entity.Instructor;
+import Brogrammers.Schooly.Repository.CourseRepository;
 import Brogrammers.Schooly.Repository.InstructorRepository;
 import Brogrammers.Schooly.views.SecurityService;
 import com.vaadin.flow.component.Component;
@@ -33,15 +34,17 @@ public class InstructorList extends VerticalLayout {
 
     private final SecurityService securityService;
     InstructorRepository instructorRepository;
+    CourseRepository courseRepository;
     Grid<Instructor> grid = new Grid<>();
 
     TextField search = new TextField();
     ModifyFormInstructor form;
 
 
-    public InstructorList(SecurityService securityService, InstructorRepository instructorRepository) throws JSONException, IOException, InterruptedException {
+    public InstructorList(SecurityService securityService, InstructorRepository instructorRepository, CourseRepository courseRepository) throws JSONException, IOException, InterruptedException {
         this.securityService = securityService;
         this.instructorRepository = instructorRepository;
+        this.courseRepository = courseRepository;
         setSizeFull();
         gridConfigure();
         formConfigure();
@@ -77,7 +80,7 @@ public class InstructorList extends VerticalLayout {
 
     //Sidebar
     private void formConfigure() {
-        form = new ModifyFormInstructor();
+        form = new ModifyFormInstructor(this.courseRepository);
         form.setWidth("25em");
 
         form.addListener(ModifyFormInstructor.SaveEvent.class, this::saveInstructor);
