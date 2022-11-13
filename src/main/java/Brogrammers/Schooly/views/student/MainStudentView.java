@@ -1,8 +1,12 @@
 package Brogrammers.Schooly.views.student;
 
 import Brogrammers.Schooly.Entity.Assignment;
+import Brogrammers.Schooly.Entity.AssignmentStudentview;
 import Brogrammers.Schooly.Entity.StudAssign;
+import Brogrammers.Schooly.Entity.gradeStudentView;
 import Brogrammers.Schooly.Repository.AssignmentRepository;
+import Brogrammers.Schooly.Repository.AssignmentStudentviewRepository;
+import Brogrammers.Schooly.Repository.GradeStudentRepository;
 import Brogrammers.Schooly.Repository.StudAssignRepository;
 import Brogrammers.Schooly.views.AppLayoutNavbarPlacementStudent;
 import com.vaadin.flow.component.grid.GridVariant;
@@ -33,18 +37,18 @@ import java.util.List;
 @RolesAllowed("ROLE_STUDENT")
 
 public class MainStudentView extends VerticalLayout {
-    protected Grid<Assignment> assGrid = new Grid<>(Assignment.class, false);
-    protected Grid<StudAssign> gradeGrid = new Grid<>(StudAssign.class, false);
+    protected Grid<AssignmentStudentview> assGrid = new Grid<>(AssignmentStudentview.class, false);
+    protected Grid<gradeStudentView> gradeGrid = new Grid<>(gradeStudentView.class, false);
 
     protected H2 currentPage = new H2("Dashboard");
     protected H3 assTitle = new H3("Assignments");
     protected H3 gradeTitle = new H3("Grades");
-    AssignmentRepository assignmentRepository;
-    StudAssignRepository gradeRepo;
+    AssignmentStudentviewRepository assignmentRepository;
+    GradeStudentRepository gradeRepo;
 
 
 
-    public MainStudentView(AssignmentRepository assignmentRepository, StudAssignRepository gradeRepo) {
+    public MainStudentView(AssignmentStudentviewRepository assignmentRepository, GradeStudentRepository gradeRepo) {
         this.assignmentRepository = assignmentRepository;
         this.gradeRepo = gradeRepo;
 
@@ -95,7 +99,7 @@ public class MainStudentView extends VerticalLayout {
         updateGrid();
     }
 
-    private ComponentRenderer<Stu_AssignmentDetailsFormLayout, Assignment> createAssignmentDetailRenderer() {
+    private ComponentRenderer<Stu_AssignmentDetailsFormLayout, AssignmentStudentview> createAssignmentDetailRenderer() {
         return new ComponentRenderer<>(Stu_AssignmentDetailsFormLayout::new, Stu_AssignmentDetailsFormLayout::setAssignment);
     }
 
@@ -117,23 +121,24 @@ public class MainStudentView extends VerticalLayout {
         assGrid.addClassNames("assignment-grid");
         assGrid.setWidth("Auto");
         //adding duplicates(?)
-        assGrid.addColumn(Assignment::getCourseID).setHeader("Course");
-        assGrid.addColumn(Assignment::getName).setHeader("Assignment");
-        assGrid.addColumn(Assignment::getDueDate).setHeader("Due Date");
+        assGrid.addColumn(AssignmentStudentview::getCourseName).setHeader("Course");
+        assGrid.addColumn(AssignmentStudentview::getAssignmentName).setHeader("Assignment");
+        assGrid.addColumn(AssignmentStudentview::getDueDate).setHeader("Due Date");
         assGrid.getColumns().forEach(col -> col.setAutoWidth(true));
         assGrid.addThemeVariants(GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
 
         gradeGrid.addClassNames("grade-grid");
         gradeGrid.setWidth("Auto");
         //adding duplicates(?)
-        gradeGrid.addColumn(StudAssign::getName).setHeader("Assignment");
-        gradeGrid.addColumn(StudAssign::getGrade).setHeader("Grade");
+        gradeGrid.addColumn(gradeStudentView::getCourseName).setHeader("Course");
+        gradeGrid.addColumn(gradeStudentView::getAssignmentName).setHeader("Assignment");
+        gradeGrid.addColumn(gradeStudentView::getGrade).setHeader("Grade");
         gradeGrid.getColumns().forEach(col -> col.setAutoWidth(true));
         gradeGrid.addThemeVariants(GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES,
             GridVariant.MATERIAL_COLUMN_DIVIDERS);
     }
     private void updateGrid() {
-        assGrid.setItems(assignmentRepository.testSearch());
-        gradeGrid.setItems(gradeRepo.searchStud());
+        assGrid.setItems(assignmentRepository.findAll());
+        gradeGrid.setItems(gradeRepo.search());
     }
 }

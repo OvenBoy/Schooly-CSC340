@@ -1,7 +1,12 @@
 package Brogrammers.Schooly.views.student;
 
 
+import Brogrammers.Schooly.Entity.AssignmentStudentview;
 import Brogrammers.Schooly.Entity.StudAssign;
+import Brogrammers.Schooly.Entity.gradeStudentView;
+import Brogrammers.Schooly.Repository.AssignmentRepository;
+import Brogrammers.Schooly.Repository.AssignmentStudentviewRepository;
+import Brogrammers.Schooly.Repository.GradeStudentRepository;
 import Brogrammers.Schooly.Repository.StudAssignRepository;
 import Brogrammers.Schooly.views.AppLayoutNavbarPlacementStudent;
 import com.vaadin.flow.component.grid.Grid;
@@ -21,12 +26,14 @@ import javax.annotation.security.RolesAllowed;
 @PageTitle("Grades | Schooly")
 @RolesAllowed("ROLE_STUDENT")
 public class StudentGradeView extends VerticalLayout {
-    protected Grid<StudAssign> grid = new Grid<>(StudAssign.class, false);
+    protected Grid<gradeStudentView> grid = new Grid<>(gradeStudentView.class, false);
     protected H2 currentPage = new H2("Grades");
-    StudAssignRepository studAssignRepository;
+    GradeStudentRepository courseRepo;
+    //StudAssignRepository studAssignRepository;
 
-    public StudentGradeView(StudAssignRepository studAssignRepository) {
-        this.studAssignRepository = studAssignRepository;
+    public StudentGradeView(GradeStudentRepository courseRepo) {
+        //this.studAssignRepository = studAssignRepository;
+        this.courseRepo = courseRepo;
         addClassName("student-grade-view");
         setSizeFull();
         configureGrid();
@@ -51,8 +58,9 @@ public class StudentGradeView extends VerticalLayout {
         grid.addClassName("grade-grid");
         grid.setSizeFull();
 
-        grid.addColumn(StudAssign::getName).setHeader("Assignment");
-        grid.addColumn(StudAssign::getGrade).setHeader("Grade");
+        grid.addColumn(gradeStudentView::getAssignmentName).setHeader("Assignment");
+        grid.addColumn(gradeStudentView::getGrade).setHeader("Grade");
+        grid.addColumn(gradeStudentView::getCourseName).setHeader("Course");
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.setSortableColumns();
@@ -60,7 +68,8 @@ public class StudentGradeView extends VerticalLayout {
                 GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_ROW_STRIPES);
     }
     private void updateGrid() {
-        grid.setItems(studAssignRepository.searchStud());
+       // grid.setItems(studAssignRepository.searchStud());
+        grid.setItems(courseRepo.search());
     }
 
 }
