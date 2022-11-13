@@ -1,5 +1,6 @@
 package Brogrammers.Schooly.Entity;
 
+import net.bytebuddy.implementation.bind.annotation.Default;
 import org.hibernate.annotations.Immutable;
 
 import javax.persistence.*;
@@ -17,17 +18,25 @@ import java.io.Serializable;
 public class ToDoStudent implements Serializable {
 
     @Size(max = 255)
-    @Column(name = "itemName")
+    @Column(name = "itemName", length = 255)
     private String itemName;
 
 
     @Id
-    @Basic(fetch = FetchType.LAZY)
-    @Column(name = "ID")
+    @SequenceGenerator(
+            name = "todo_sequence",
+            sequenceName = "todo_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "todo_sequence"
+    )
+    @Column(name = "ID", nullable = false)
     private Integer ID;
 
-    @Column(name = "status")
-    private boolean status;
+//    @Column(name = "status", nullable = false)
+//    private boolean status;
 
     public String getItemName() {
         return itemName;
@@ -45,22 +54,21 @@ public class ToDoStudent implements Serializable {
         this.ID = ID;
     }
 
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
+//    public boolean isStatus() {
+//        return status;
+//    }
+//
+//    public void setStatus(boolean status) {
+//        this.status = status;
+//    }
 
     public ToDoStudent() {
 
     }
 
-    public ToDoStudent(String itemName, Integer ID, boolean status) {
+    public ToDoStudent(String itemName) {
         this.itemName = itemName;
-        this.ID = ID;
-        this.status = status;
+//        this.status = status;
     }
 
 }

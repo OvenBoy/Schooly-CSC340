@@ -40,29 +40,17 @@ public class StudentToDoView extends VerticalLayout {
     public StudentToDoView(ToDoStudentRepository todoRepo) {
         form = new ToDoForm();
         this.todoRepo = todoRepo;
+        form = new ToDoForm();
 
         addClassName("list-view");
         setSizeFull();
         configHeader();
         configGrid();
 
-        TextField taskField = new TextField();
-        Button addButton = new Button("Add");
-        addButton.addClickListener(click -> {
-            taskField.getValue();
-            addToDo();
-
-        });
-        addButton.addClickShortcut(Key.ENTER);
-
-
         add(
                 currentPage,
                 new Hr(),
-                new HorizontalLayout(
-                        taskField,
-                        addButton
-                ),
+                form,
                 grid
         );
         updateGrid();
@@ -90,7 +78,7 @@ public class StudentToDoView extends VerticalLayout {
         grid.addClassName("todo-grid");
         grid.setSizeFull();
         grid.addColumn(ToDoStudent::getItemName).setHeader("To-Do");
-        grid.addColumn(ToDoStudent::isStatus).setHeader("Status");
+//        grid.addColumn(ToDoStudent::isStatus).setHeader("Status");
         ComboBox<ToDoStudent> status = new ComboBox<>("Status");
 
 
