@@ -7,6 +7,7 @@ import Brogrammers.Schooly.views.AppLayoutNavbarPlacementStudent;
 
 import Brogrammers.Schooly.views.ToDoForm;
 
+import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -40,10 +41,10 @@ public class StudentToDoView extends VerticalLayout {
     public StudentToDoView(ToDoStudentRepository todoRepo) {
         form = new ToDoForm();
         this.todoRepo = todoRepo;
-        form = new ToDoForm();
 
         addClassName("list-view");
         setSizeFull();
+        formConfigure();
         configHeader();
         configGrid();
 
@@ -88,8 +89,6 @@ public class StudentToDoView extends VerticalLayout {
 
     private void updateGrid() {
         grid.setItems(todoRepo.findAll());
-
-
     }
     private void closeForm() {
         form.setToDo(null);
@@ -107,6 +106,16 @@ public class StudentToDoView extends VerticalLayout {
             form.setToDo(todo);
             form.setVisible(true);
         }
+    }
+
+    private void formConfigure(){
+        form = new ToDoForm();
+        form.addListener(ToDoForm.SaveEvent.class, this::saveTodo);
+    }
+
+    private void saveTodo(ToDoForm.SaveEvent event) {
+        todoRepo.save(event.getToDo());
+        updateGrid();
     }
 
 }

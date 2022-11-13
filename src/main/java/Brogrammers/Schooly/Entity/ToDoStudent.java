@@ -12,15 +12,8 @@ import java.io.Serializable;
  * Mapping for DB view
  */
 @Entity
-@Immutable
 @Table(name = "todo")
-@IdClass(ToDoStudent.class)
-public class ToDoStudent implements Serializable {
-
-    @Size(max = 255)
-    @Column(name = "itemName", length = 255)
-    private String itemName;
-
+public class ToDoStudent {
 
     @Id
     @SequenceGenerator(
@@ -32,11 +25,13 @@ public class ToDoStudent implements Serializable {
             strategy = GenerationType.SEQUENCE,
             generator = "todo_sequence"
     )
-    @Column(name = "ID", nullable = false)
-    private Integer ID;
+    @Column(name = "todoID", nullable = false)
+    private Integer id;
 
-//    @Column(name = "status", nullable = false)
-//    private boolean status;
+    @Size(max = 255)
+    @Column(name = "itemName", length = 255)
+    private String itemName;
+
 
     public String getItemName() {
         return itemName;
@@ -47,28 +42,19 @@ public class ToDoStudent implements Serializable {
     }
 
     public Integer getID() {
-        return ID;
+        return id;
     }
 
     public void setID(Integer ID) {
-        this.ID = ID;
+        this.id = ID;
     }
 
-//    public boolean isStatus() {
-//        return status;
-//    }
-//
-//    public void setStatus(boolean status) {
-//        this.status = status;
-//    }
 
     public ToDoStudent() {
-
     }
 
     public ToDoStudent(String itemName) {
         this.itemName = itemName;
-//        this.status = status;
     }
 
 }

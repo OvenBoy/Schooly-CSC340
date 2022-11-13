@@ -20,43 +20,32 @@ import com.vaadin.flow.shared.Registration;
 
 
 public class ToDoForm extends FormLayout {
-
-    private ToDoStudent todo;
-
     Binder<ToDoStudent> bind = new BeanValidationBinder<>(ToDoStudent.class);
 
     //Text Fields
     TextField itemName = new TextField("Item Name");
-    Button addButton = new Button("Add");
-//    TextField itemName = new TextField("Item Name");
-//    TextField ID = new TextField("ID");
-//    TextField status = new TextField("Status");
+    Button save = new Button("Add");
+    private ToDoStudent toDoStudent;
 
     public ToDoForm() {
-       add(itemName, addButton);
-        bind.bindInstanceFields(this.itemName);
-        addButton.addAttachListener(event-> save());
-
+        add(itemName, save);
+        save.addClickListener(event-> save());
     }
 
-    public void setToDo(ToDoStudent todo) {
-        this.todo = todo;
-        bind.readBean(todo);
+
+    public void setToDo(ToDoStudent toDoStudent) {
+        this.toDoStudent = toDoStudent;
+        bind.readBean(toDoStudent);
     }
 
     private void save() {
-        try {
-            bind.writeBean(todo);
-            if(todo.getItemName().isEmpty()){
-                //Try using notification just like I did;
-                return;
-            }
-            fireEvent(new ToDoForm.SaveEvent(this, todo));
-        }catch (ValidationException e){
-            throw new RuntimeException(e);
+        toDoStudent = new ToDoStudent(this.itemName.getValue());
+        this.itemName.setValue("");
+        if(toDoStudent.getItemName() == null){
+            System.out.println("Item is null");
+            return;
         }
-
-
+        fireEvent(new ToDoForm.SaveEvent(this, toDoStudent));
     }
 
 
@@ -82,5 +71,4 @@ public class ToDoForm extends FormLayout {
             super(source, toDoStudent);
         }
     }
-
 }
