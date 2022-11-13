@@ -38,7 +38,7 @@ public class StudentToDoView extends VerticalLayout {
     ToDoStudentRepository todoRepo;
 
     public StudentToDoView(ToDoStudentRepository todoRepo) {
-
+        form = new ToDoForm();
         this.todoRepo = todoRepo;
 
         addClassName("list-view");

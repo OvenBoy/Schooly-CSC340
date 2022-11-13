@@ -94,3 +94,22 @@ create table course_sequence
     next_val bigint null
 );
 
+DROP TABLE IF EXISTS `assignment_studentview`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `assignment_studentview`  AS   (select distinct `a`.`courseID` AS `courseID`,`a`.`name` AS `assignment_name`,`c`.`name` AS `course_name`,`a`.`due_date` AS `duedate`,`a`.`description` AS `description` from (((`assignment` `a` join `course` `c`) join `takes` `t`) join `student` `s`) where `a`.`courseID` = `c`.`courseID` and `t`.`courseID` = `c`.`courseID` and `s`.`studID` = `t`.`studID`)  ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `grade_studentview`
+--
+DROP TABLE IF EXISTS `grade_studentview`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `grade_studentview`  AS   (select distinct `s`.`studID` AS `studID`,`s`.`courseID` AS `courseID`,`s`.`name` AS `name`,`s`.`grade` AS `grade`,`c`.`name` AS `course_name` from (`stud_assign` `s` join `course` `c` on(`s`.`courseID` = `c`.`courseID`)))  ;
+
+
+CREATE TABLE `todo` (
+  `ID` int(11) NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `item_name` varchar(255) NOT NULL
+) 
