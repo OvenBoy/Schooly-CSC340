@@ -67,7 +67,7 @@ public class ModifyFormInstructor extends FormLayout {
         courseID.addValueChangeListener(e-> courseName.setValue(getCourseNameByID(courseID.getValue())));
         courseName.addValueChangeListener(e-> courseID.setValue(getCourseIDByName(courseName.getValue())));
         save.addClickListener(event -> validateAndSave());
-        delete.addClickListener(event -> fireEvent(new DeleteEvent(this, instructor)));
+        delete.addClickListener(event -> deleteInst());
         cancel.addClickListener(event -> fireEvent(new CloseEvent(this)));
 
         return new HorizontalLayout(save, delete, cancel);
@@ -87,9 +87,15 @@ public class ModifyFormInstructor extends FormLayout {
                 notification = show("Instructor without course created");
             }
             fireEvent(new SaveEvent(this, instructor));
+            setComboBox();
         } catch (ValidationException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void deleteInst(){
+        fireEvent(new DeleteEvent(this, instructor));
+        setComboBox();
     }
 
     // Events
