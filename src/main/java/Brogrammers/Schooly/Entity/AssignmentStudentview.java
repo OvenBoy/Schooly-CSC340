@@ -48,7 +48,7 @@ public class AssignmentStudentview implements Serializable {
         return assignmentName;
     }
 
-    public LocalDate getDuedate() {
+    public LocalDate getDueDate() {
         return duedate;
     }
 

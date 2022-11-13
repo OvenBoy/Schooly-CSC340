@@ -1,8 +1,10 @@
 package Brogrammers.Schooly.views.student;
 
 import Brogrammers.Schooly.Entity.Assignment;
+import Brogrammers.Schooly.Entity.AssignmentStudentview;
 import Brogrammers.Schooly.Entity.Course;
 import Brogrammers.Schooly.Repository.AssignmentRepository;
+import Brogrammers.Schooly.Repository.AssignmentStudentviewRepository;
 import Brogrammers.Schooly.Repository.CourseRepository;
 import Brogrammers.Schooly.views.AppLayoutNavbarPlacementStudent;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -20,6 +22,7 @@ import com.vaadin.flow.router.Route;
 
 import data.entity.Stu_AssignmentDetailsFormLayout;
 import data.entity.Stu_Assignments;
+import org.springframework.expression.spel.ast.Assign;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -34,14 +37,14 @@ import java.util.stream.Stream;
 @PageTitle("Assignments | Schooly")
 @RolesAllowed("ROLE_STUDENT")
 public class StudentAssignmentView extends VerticalLayout {
-    protected Grid<Assignment> grid = new Grid<>();
+    protected Grid<AssignmentStudentview> grid = new Grid<>(AssignmentStudentview.class, false);
     protected H2 currentPage = new H2("Assignments");
-    AssignmentRepository assignmentRepository;
-    CourseRepository courseRepo;
+    AssignmentStudentviewRepository assignmentRepository;
+    //CourseRepository courseRepo;
 
-    public StudentAssignmentView(AssignmentRepository assignmentRepository, CourseRepository courseRepo) {
+    public StudentAssignmentView(AssignmentStudentviewRepository assignmentRepository) {
         this.assignmentRepository = assignmentRepository;
-        this.courseRepo = courseRepo;
+        //this.courseRepo = courseRepo;
         addClassName("stu-assignment-view");
         setSizeFull();
         configureGrid();
@@ -54,29 +57,29 @@ public class StudentAssignmentView extends VerticalLayout {
 
 
 
-    private ComponentRenderer<AssignmentPageFormLayout, Assignment> createAssignmentDetailRenderer() {
+    private ComponentRenderer<AssignmentPageFormLayout, AssignmentStudentview> createAssignmentDetailRenderer() {
         return new ComponentRenderer<>(AssignmentPageFormLayout::new, AssignmentPageFormLayout::setAssignment);
     }
 
     private void configureGrid() {
         grid.addClassName("assignment-grid");
         grid.setSizeFull();
-        grid.addColumn(Assignment::getName).setHeader("Assignment");
-        grid.addColumn(Assignment::getDescription).setHeader("Description");
-        grid.addColumn(Assignment::getDueDate).setHeader("Due Date");
-        //grid.addColumn(Course::getName).setHeader("Course");
+        grid.addColumn(AssignmentStudentview::getCourseName).setHeader("Course");
+        grid.addColumn(AssignmentStudentview::getAssignmentName).setHeader("Assignment");
+        grid.addColumn(AssignmentStudentview::getDescription).setHeader("Description");
+        grid.addColumn(AssignmentStudentview::getDueDate).setHeader("Due Date").setSortable(true);
 
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
-        //grid.setSortableColumns("dueDate");
-        grid.setMultiSort(true);
+//        grid.setSortableColumns("Assignment");
+//        grid.setMultiSort(true);
         grid.addThemeVariants(GridVariant.LUMO_NO_ROW_BORDERS,
                 GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_ROW_STRIPES);
 
     }
     private void updateGrid() {
         grid.setItems(assignmentRepository.findAll());
-        grid.setItems(assignmentRepository.nameSearch());
+        //grid.setItems(assignmentRepository.nameSearch());
     }
     private static class AssignmentPageFormLayout extends FormLayout{
         private final TextField courseTitle = new TextField("Course Title");
@@ -105,9 +108,9 @@ public class StudentAssignmentView extends VerticalLayout {
 
 
         }
-        public void setAssignment(Assignment assignment){
-            courseTitle.setValue(assignment.getCourseID().toString());
-            assignmentTitle.setValue(assignment.getName());
+        public void setAssignment(AssignmentStudentview assignment){
+            courseTitle.setValue(assignment.getCourseName());
+            assignmentTitle.setValue(assignment.getAssignmentName());
             dueDate.setValue(assignment.getDueDate().toString());
             //time.setValue(assignment.getTime());
             //possPoints.setValue(assignment.getPossiblePoints());

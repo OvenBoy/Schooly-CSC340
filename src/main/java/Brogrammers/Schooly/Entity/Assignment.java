@@ -35,7 +35,7 @@ public class Assignment implements Serializable {
     public Assignment(String name, LocalDate dueDate, Integer courseID) {
         this.name = name;
         this.dueDate = dueDate;
-        this.courseID = courseID;
+        this.courseID = courseID ;
     }
 
     public Assignment() {
