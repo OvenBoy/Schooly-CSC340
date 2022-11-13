@@ -19,8 +19,6 @@ import org.json.JSONException;
 
 import javax.annotation.security.PermitAll;
 
-import static Brogrammers.Schooly.API.getWeather;
-
 /*
 Creates the Navigation bar for the App
  */

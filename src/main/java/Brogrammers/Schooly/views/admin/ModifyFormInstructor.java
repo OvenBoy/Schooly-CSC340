@@ -10,6 +10,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
@@ -20,8 +21,12 @@ import com.vaadin.flow.shared.Registration;
 
 import java.util.List;
 
+import static Brogrammers.Schooly.APIAndOtherMethods.show;
+
 
 public class ModifyFormInstructor extends FormLayout {
+
+    Notification notification;
     CourseRepository courseRepository;
     Binder<Instructor> binder = new BeanValidationBinder<>(Instructor.class);
     TextField fName = new TextField("First name");
@@ -43,7 +48,6 @@ public class ModifyFormInstructor extends FormLayout {
         courseID.setAllowCustomValue(true);
         setComboBox();
 
-        courseID.addValueChangeListener(e-> courseName.setValue(getCourseNameByID(courseID.getValue())));
         add(fName, lName, email, courseID, courseName, editButtons());
         binder.bindInstanceFields(this);
     }
@@ -60,6 +64,8 @@ public class ModifyFormInstructor extends FormLayout {
         save.addClickShortcut(Key.ENTER);
         cancel.addClickShortcut(Key.ESCAPE);
 
+        courseID.addValueChangeListener(e-> courseName.setValue(getCourseNameByID(courseID.getValue())));
+        courseName.addValueChangeListener(e-> courseID.setValue(getCourseIDByName(courseName.getValue())));
         save.addClickListener(event -> validateAndSave());
         delete.addClickListener(event -> fireEvent(new DeleteEvent(this, instructor)));
         cancel.addClickListener(event -> fireEvent(new CloseEvent(this)));
@@ -71,6 +77,15 @@ public class ModifyFormInstructor extends FormLayout {
     private void validateAndSave() {
         try {
             binder.writeBean(instructor);
+            if(instructor.getFName().isEmpty() || instructor.getLName().isEmpty()){
+                notification = show("Provide valid name");
+                return;
+            } else if (instructor.getEmail().isEmpty()) {
+                notification = show("Provide valid email");
+                return;
+            } else if (instructor.getCourseName() == null) {
+                notification = show("Instructor without course created");
+            }
             fireEvent(new SaveEvent(this, instructor));
         } catch (ValidationException e) {
             throw new RuntimeException(e);

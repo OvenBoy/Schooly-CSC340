@@ -120,7 +120,7 @@ public class StudentCourseAdminView extends VerticalLayout {
     }
 
     private void formConfigure() {
-        form = new ModifyFormStudentCourse();
+        form = new ModifyFormStudentCourse(this.takeRepository);
         form.setWidth("25em");
 
         form.addListener(ModifyFormStudentCourse.SaveEvent.class, this::saveStudentCourse);
