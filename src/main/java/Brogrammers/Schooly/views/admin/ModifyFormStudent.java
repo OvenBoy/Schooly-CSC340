@@ -7,6 +7,7 @@ import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.TextField;
@@ -15,8 +16,11 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
 
+import static Brogrammers.Schooly.APIAndOtherMethods.show;
+
 
 public class ModifyFormStudent extends FormLayout {
+    Notification notification;
     Binder<Student> binder = new BeanValidationBinder<>(Student.class);
     TextField fName = new TextField("First name");
     TextField lName = new TextField("Last name");
@@ -57,7 +61,15 @@ public class ModifyFormStudent extends FormLayout {
     private void validateAndSave() {
         try {
             binder.writeBean(student);
+            if(student.getFName().isEmpty() || student.getLName().isEmpty()){
+                notification = show("Provide valid name");
+                return;
+            } else if (student.getEmail().isEmpty()) {
+                notification = show("Provide valid email");
+                return;
+            }
             fireEvent(new ModifyFormStudent.SaveEvent(this, student));
+            notification = show("Student added");
         } catch (ValidationException e) {
             throw new RuntimeException(e);
         }

@@ -2,24 +2,33 @@ package Brogrammers.Schooly.views.admin;
 
 
 import Brogrammers.Schooly.Entity.Take;
+import Brogrammers.Schooly.Repository.TakeRepository;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
 
+import java.util.List;
+
+import static Brogrammers.Schooly.APIAndOtherMethods.show;
+
 public class ModifyFormStudentCourse extends FormLayout {
+    Notification notification;
+    TakeRepository takeRepository;
     Binder<Take> binder = new BeanValidationBinder<>(Take.class);
-    TextField studID = new TextField("Student ID");
-    TextField courseId = new TextField("Course ID");
+
+    ComboBox<Integer> studID = new ComboBox<>("Student ID");
+    ComboBox<Integer> courseId = new ComboBox<>("Course ID");
 
     Button save = new Button("Save");
     Button delete = new Button("Delete");
@@ -27,11 +36,20 @@ public class ModifyFormStudentCourse extends FormLayout {
 
     private Take take;
 
-    public ModifyFormStudentCourse(){
+    public ModifyFormStudentCourse(TakeRepository takeRepository){
+        this.takeRepository = takeRepository;
+        studID.setAllowCustomValue(true);
+        courseId.setAllowCustomValue(true);
+        setComboBox();
         HorizontalLayout layout = new HorizontalLayout(studID, courseId,editButtons());
         layout.setAlignItems(FlexComponent.Alignment.BASELINE);
         add(layout);
         binder.bindInstanceFields(this);
+    }
+
+    private void setComboBox() {
+        this.studID.setItems(this.takeRepository.searchStudID());
+        this.courseId.setItems(this.takeRepository.searchCourseID());
     }
 
     private HorizontalLayout editButtons() {
@@ -52,6 +70,18 @@ public class ModifyFormStudentCourse extends FormLayout {
     private void validateAndSave() {
         try {
             binder.writeBean(take);
+
+            if(take.getStudID() == null){
+                notification = show("Provide a Student ID");
+                return;
+            }
+            else if(take.getCourseID() == null){
+                notification = show("Provide a Course ID");
+                return;
+            } else if (checkingTakeForSaveORDelete(take) == 1) {
+                notification = show("This student is already in this class");
+                return;
+            }
             fireEvent(new ModifyFormStudentCourse.SaveEvent(this, take));
         } catch (ValidationException e) {
             throw new RuntimeException(e);
@@ -59,7 +89,13 @@ public class ModifyFormStudentCourse extends FormLayout {
     }
     private void validateAndDelete(){
         try {
+
             binder.writeBean(take);
+            // check if take exists
+            if (checkingTakeForSaveORDelete(take) == 0){
+                notification = show("This student is not registered in this class");
+                return;
+            }
             fireEvent(new ModifyFormStudentCourse.DeleteEvent(this, take));
         } catch (ValidationException e) {
             throw new RuntimeException(e);
@@ -105,6 +141,15 @@ public class ModifyFormStudentCourse extends FormLayout {
     public <T extends ComponentEvent<?>> Registration addListener(Class<T> eventType,
                                                                   ComponentEventListener<T> listener) {
         return getEventBus().addListener(eventType, listener);
+    }
+
+    private Integer checkingTakeForSaveORDelete(Take take){
+        for (Take t:this.takeRepository.findAll()) {
+            if(t.getStudID().equals(take.getStudID()) && (t.getCourseID().equals(take.getCourseID()))){
+                return 1;
+            }
+        }
+        return 0;
     }
 
 }

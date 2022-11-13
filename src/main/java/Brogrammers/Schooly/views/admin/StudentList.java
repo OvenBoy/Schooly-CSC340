@@ -21,7 +21,6 @@ import org.json.JSONException;
 
 import javax.annotation.security.RolesAllowed;
 
-import static Brogrammers.Schooly.API.getWeather;
 import static java.lang.Boolean.TRUE;
 
 //@RolesAllowed("ROLE_ADMIN")

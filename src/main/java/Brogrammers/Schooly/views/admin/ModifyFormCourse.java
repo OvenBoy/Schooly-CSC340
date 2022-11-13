@@ -7,14 +7,10 @@ import Brogrammers.Schooly.Repository.InstructorRepository;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -24,6 +20,8 @@ import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
 
 import java.util.List;
+
+import static Brogrammers.Schooly.APIAndOtherMethods.show;
 
 public class ModifyFormCourse extends FormLayout {
     CourseRepository courseRepository;
@@ -74,7 +72,7 @@ public class ModifyFormCourse extends FormLayout {
         try {
             binder.writeBean(course);
             if(course.getName().isEmpty()){
-                notification= show("Cannot insert an empty course");
+                notification= show("Course name cannot be empty");
                 return;
             }
             else if (checkingCourse(course.getName()) == 1){
@@ -159,30 +157,6 @@ public class ModifyFormCourse extends FormLayout {
         return getEventBus().addListener(eventType, listener);
     }
 
-    public Notification show(String error){
-        Notification notification = new Notification();
-        notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
-
-        Div text = new Div(new Text(error));
-
-        Button closeButton = new Button(new Icon("lumo", "cross"));
-        closeButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
-        closeButton.getElement().setAttribute("aria-label", "Close");
-        closeButton.addClickListener(event -> {
-            notification.close();
-        });
-
-        HorizontalLayout layout = new HorizontalLayout(text, closeButton);
-        layout.setAlignItems(FlexComponent.Alignment.CENTER);
-
-        notification.add(layout);
-        notification.open();
-
-        notification.setPosition(Notification.Position.MIDDLE);
-
-        return notification;
-    }
-
     private Integer checkingCourse(String courseName){
         for (Course course: courseList) {
             if(course.getName().equals(courseName)){
@@ -194,7 +168,11 @@ public class ModifyFormCourse extends FormLayout {
 
     private Integer checkingDeleteValidationCourse(Integer courseID){
         for(Instructor instructor : instructorList){
-            if(instructor.getCourseID().equals(courseID)){
+            if(instructor.getCourseID() == null){
+                return 0;
+
+            }
+            else if(instructor.getCourseID().equals(courseID)){
                 return 1;
             }
         }

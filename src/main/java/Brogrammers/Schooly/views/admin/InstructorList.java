@@ -24,7 +24,6 @@ import javax.annotation.security.RolesAllowed;
 
 import java.io.IOException;
 
-import static Brogrammers.Schooly.API.getWeather;
 import static java.lang.Boolean.TRUE;
 
 @PageTitle("Admin-Instructor")
