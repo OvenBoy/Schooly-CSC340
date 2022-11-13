@@ -1,11 +1,14 @@
 package Brogrammers.Schooly.views;
 
 import Brogrammers.Schooly.Entity.StudAssign;
+import Brogrammers.Schooly.Repository.StudAssignRepository;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -18,24 +21,39 @@ import com.vaadin.flow.shared.Registration;
 public class GradeForm extends FormLayout {
 
     private StudAssign studAssign;
+    StudAssignRepository studAssignRepository;
 
     Binder<StudAssign> bind = new BeanValidationBinder<>(StudAssign.class);
 
     //Text Fields
-    TextField courseID = new TextField("Course ID");
-    TextField name = new TextField("Assignment Name");
+    ComboBox<Integer> courseID = new ComboBox<>("Course ID");
+    ComboBox<String> name = new ComboBox<>("Assignment Name");
     TextField grade = new TextField("Grade");
-    TextField studID = new TextField("Student ID");
+    ComboBox<Integer> studID = new ComboBox<>("Student ID");
 
     //Button Declarations
     Button save = new Button("Save");
     Button delete = new Button("Delete");
     Button close = new Button("Cancel");
 
-    public GradeForm() {
+    public GradeForm(StudAssignRepository studAssignRepository) {
         addClassName("grade-form");
+
+        this.studAssignRepository = studAssignRepository;
+        courseID.setAllowCustomValue(true);
+        name.setAllowCustomValue(true);
+        studID.setAllowCustomValue(true);
+        courseID.setItems(this.studAssignRepository.searchAllCourseID());
+        setComboBox();
+
         add(courseID,name,grade,studID,createButtonsLayout());
         bind.bindInstanceFields(this);
+    }
+
+    private void setComboBox() {
+        name.setItems(this.studAssignRepository.searchStudAssignByCourseID(courseID.getValue()));
+        studID.setItems(this.studAssignRepository.searchStudIDByCourseID(courseID.getValue()));
+
     }
 
     public void setStudAssign(StudAssign studAssign) {
@@ -78,6 +96,7 @@ public class GradeForm extends FormLayout {
         save.addClickShortcut(Key.ENTER);
         close.addClickShortcut(Key.ESCAPE);
 
+        courseID.addValueChangeListener(e-> setComboBox());
         save.addClickListener(event -> gradeSave());
         delete.addClickListener(event -> fireEvent(new DelEvent(this, studAssign)));
         close.addClickListener(event -> fireEvent(new CloseEvent(this)));

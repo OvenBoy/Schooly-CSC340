@@ -102,7 +102,7 @@ public class GradeView extends VerticalLayout{
     }
 
     private void configureForm() {
-        form = new GradeForm();
+        form = new GradeForm(this.studAssignRepository);
         form.setWidth("25em");
 
         form.addListener(GradeForm.SavEvent.class, this::savGrade);
