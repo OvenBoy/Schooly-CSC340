@@ -4,6 +4,7 @@ import Brogrammers.Schooly.Entity.Assignment;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
@@ -25,6 +26,7 @@ public class AssigmentForm extends FormLayout {
 
     // Declaring Variables
     private Assignment assignment;
+    Notification notification;
     Binder<Assignment> binder = new BeanValidationBinder<>(Assignment.class);
 
     //Text fields
@@ -96,6 +98,23 @@ public class AssigmentForm extends FormLayout {
     private void valAndSave() {
         try {
             binder.writeBean(assignment);
+
+            // error checking
+            if(assignment.getCourseID() == null) {
+                notification = Notification.show("Course ID cannot be empty");
+                return;
+            } else if (assignment.getName().isEmpty()) {
+                notification = Notification.show("Assignment must have a name");
+                return;
+            } else if (assignment.getDescription().isEmpty()) {
+                notification = Notification.show("Assignment must have a description");
+                return;
+            } else if (assignment.getDueDate() == null) {
+                notification = Notification.show("Assignment must have a due Date");
+                return;
+            }
+
+
             fireEvent(new SaveEvent(this, assignment));
         } catch (ValidationException err) {
             throw new RuntimeException(err);

@@ -34,7 +34,7 @@ public class StudentList extends VerticalLayout {
     ModifyFormStudent form;
     private final SecurityService securityService;
 
-    public StudentList(StudentRepository studentRepository, SecurityService securityService) throws JSONException {
+    public StudentList(StudentRepository studentRepository, SecurityService securityService) {
         this.studentRepository = studentRepository;
         this.securityService = securityService;
         setSizeFull();
@@ -130,9 +130,7 @@ public class StudentList extends VerticalLayout {
         logout.addThemeVariants(ButtonVariant.LUMO_ERROR);
         addStudentButton.addClickListener(e -> addStudent());
 
-        HorizontalLayout toolbar = new HorizontalLayout(instNavigationButton,courseNavigationButton, studCourseNavigationButton, search, addStudentButton, logout);
-
-        return toolbar;
+        return new HorizontalLayout(instNavigationButton,courseNavigationButton, studCourseNavigationButton, search, addStudentButton, logout);
     }
 
     /**

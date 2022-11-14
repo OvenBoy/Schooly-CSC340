@@ -40,7 +40,7 @@ public class InstructorList extends VerticalLayout {
     ModifyFormInstructor form;
 
 
-    public InstructorList(SecurityService securityService, InstructorRepository instructorRepository, CourseRepository courseRepository) throws JSONException, IOException, InterruptedException {
+    public InstructorList(SecurityService securityService, InstructorRepository instructorRepository, CourseRepository courseRepository) {
         this.securityService = securityService;
         this.instructorRepository = instructorRepository;
         this.courseRepository = courseRepository;
@@ -135,9 +135,7 @@ public class InstructorList extends VerticalLayout {
         logout.addThemeVariants(ButtonVariant.LUMO_ERROR);
         addInstructorButton.addClickListener(e -> addInstructor());
 
-        HorizontalLayout toolbar = new HorizontalLayout(studNavigationButton,courseNavigationButton, studCourseNavigationButton, search, addInstructorButton, logout);
-
-        return toolbar;
+        return new HorizontalLayout(studNavigationButton,courseNavigationButton, studCourseNavigationButton, search, addInstructorButton, logout);
     }
 
     /**

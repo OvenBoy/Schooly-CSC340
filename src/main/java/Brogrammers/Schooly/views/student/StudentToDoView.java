@@ -11,8 +11,6 @@ import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
-import com.vaadin.flow.component.checkbox.CheckboxGroup;
-import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
 
 import com.vaadin.flow.component.grid.editor.Editor;
@@ -20,7 +18,6 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.listbox.MultiSelectListBox;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -32,8 +29,12 @@ import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.*;
 
 import javax.annotation.security.RolesAllowed;
-import java.util.List;
 
+/**
+ * This view creates the entire to-do page. It creates, validates, deletes, and 
+ * edits to-do entries. 
+ * @author evanc
+ */
 @Route(value ="to-do", layout = AppLayoutNavbarPlacementStudent.class)
 @PageTitle("To-Do  | Schooly")
 @RolesAllowed("ROLE_STUDENT")
@@ -42,7 +43,14 @@ public class StudentToDoView extends VerticalLayout {
     TextField ToDoField = new TextField();
     Binder<ToDoStudent> binder = new BeanValidationBinder<>(ToDoStudent.class);
 
+    /**
+     * H2 to display title of current page
+     */
     protected H2 currentPage = new H2("To-Do");
+
+    /**
+     * VerticalLayout for list items
+     */
     protected VerticalLayout todosList = new VerticalLayout();
     Grid<ToDoStudent> grid = new Grid<>(ToDoStudent.class, false);
     Editor<ToDoStudent> editor = grid.getEditor();
@@ -50,6 +58,13 @@ public class StudentToDoView extends VerticalLayout {
     ToDoForm form;
     ToDoStudentRepository todoRepo;
 
+    /**
+     * This main function of the class initializes a form and instantiates  
+     * a version of todoRepo. Then it configures the form, header, and grid
+     * and adds them to the current page. It will then populate the grid with
+     * all information from the database
+     * @param todoRepo repository of students to-do items
+     */
     public StudentToDoView(ToDoStudentRepository todoRepo) {
         form = new ToDoForm();
         this.todoRepo = todoRepo;
@@ -68,6 +83,7 @@ public class StudentToDoView extends VerticalLayout {
         );
         updateGrid();
     }
+    
     private void setContainerStyles(Div container) {
         container.getStyle().set("display", "flex").set("flex-direction", "row")
                 .set("flex-wrap", "wrap");
@@ -115,21 +131,23 @@ public class StudentToDoView extends VerticalLayout {
 
 
         ToDoField.setWidthFull();
+        //Delete Button Action
         Grid.Column<ToDoStudent> editColumn = grid.addComponentColumn(todo -> {
             Button delete = new Button(VaadinIcon.CLOSE.create());
             delete.addThemeVariants(ButtonVariant.LUMO_ICON, ButtonVariant.LUMO_ERROR);
-
             delete.addClickListener(e -> {
                 this.todoRepo.delete(todo);
                 updateGrid();
             });
             return delete;
         }).setWidth("150px").setFlexGrow(0);
-        
+
+        Binder<ToDoStudent> binder = new Binder<>(ToDoStudent.class);
+        editor.setBinder(binder);
+        binder.forField(ToDoField).bind(ToDoStudent::getItemName, ToDoStudent::setItemName);
         addCloseHandler(ToDoField, editor);
         ToDoItem.setEditorComponent(ToDoField);
-
-
+        //Edit Item
         grid.addItemDoubleClickListener(e -> {
             editAssign(e.getItem());
             editor.editItem(e.getItem());
@@ -138,12 +156,12 @@ public class StudentToDoView extends VerticalLayout {
                 ((Focusable) editorComponent).focus();
             }
         });
+        
         ToDoField.addValueChangeListener(e->{
             todo.setItemName(ToDoField.getValue());
             this.todoRepo.save(todo);
             updateGrid();
         });
-
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
@@ -156,10 +174,6 @@ public class StudentToDoView extends VerticalLayout {
     private void closeForm() {
         form.setToDo(null);
         form.setVisible(false);
-    }
-    private void addToDo() {
-        grid.asSingleSelect().clear();
-        editAssign(new ToDoStudent());
     }
 
     private void editAssign(ToDoStudent todo) {

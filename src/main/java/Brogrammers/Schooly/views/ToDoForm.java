@@ -1,10 +1,6 @@
 package Brogrammers.Schooly.views;
 
-import Brogrammers.Schooly.Entity.StudAssign;
-import Brogrammers.Schooly.Entity.Student;
 import Brogrammers.Schooly.Entity.ToDoStudent;
-import Brogrammers.Schooly.views.admin.ModifyFormStudent;
-import Brogrammers.Schooly.views.student.StudentToDoView;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -18,7 +14,6 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
 
 
@@ -44,7 +39,7 @@ public class ToDoForm extends FormLayout {
     private void save() {
         toDoStudent = new ToDoStudent(this.itemName.getValue());
         this.itemName.setValue("");
-        if(toDoStudent.getItemName() == null || toDoStudent.getItemName() == ""){
+        if(toDoStudent.getItemName() == null || toDoStudent.getItemName().equals("")){
             System.out.println("Item is null");
             Notification notification = show();
             notification
@@ -54,8 +49,8 @@ public class ToDoForm extends FormLayout {
         fireEvent(new ToDoForm.SaveEvent(this, toDoStudent));
     }
 
-    public Notification show(){
-        Div text = new Div(new Text("To Do Item Empty"));
+    private Notification show(){
+        Div text = new Div(new Text("To Do Item Is Empty"));
 
 
         Notification notification = new Notification();
@@ -77,10 +72,6 @@ public class ToDoForm extends FormLayout {
 
         return notification;
     }
-
-
-
-
 
 
     public <T extends ComponentEvent<?>> Registration addListener(Class<T> eventType, ComponentEventListener<T> listener) {

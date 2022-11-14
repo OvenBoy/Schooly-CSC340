@@ -1,13 +1,9 @@
 package Brogrammers.Schooly.views.student;
 
-import Brogrammers.Schooly.Entity.Assignment;
 import Brogrammers.Schooly.Entity.AssignmentStudentview;
-import Brogrammers.Schooly.Entity.StudAssign;
 import Brogrammers.Schooly.Entity.gradeStudentView;
-import Brogrammers.Schooly.Repository.AssignmentRepository;
 import Brogrammers.Schooly.Repository.AssignmentStudentviewRepository;
 import Brogrammers.Schooly.Repository.GradeStudentRepository;
-import Brogrammers.Schooly.Repository.StudAssignRepository;
 import Brogrammers.Schooly.views.AppLayoutNavbarPlacementStudent;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.H2;
@@ -20,34 +16,56 @@ import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.component.grid.Grid;
 
-import data.entity.Grades;
 import data.entity.Stu_AssignmentDetailsFormLayout;
-import data.entity.Stu_Assignments;
-import data.entity.Stu_Grades;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.annotation.security.RolesAllowed;
-import java.util.ArrayList;
-import java.util.List;
 
-
+/**
+ *
+ * @author evanc
+ */
 @Route(value = "student", layout= AppLayoutNavbarPlacementStudent.class)
 @PageTitle("Dashboard | Schooly")
 @RolesAllowed("ROLE_STUDENT")
 
 public class MainStudentView extends VerticalLayout {
+
+    /**
+     * Assignment Grid 
+     */
     protected Grid<AssignmentStudentview> assGrid = new Grid<>(AssignmentStudentview.class, false);
+
+    /**
+     * Grade Grid
+     */
     protected Grid<gradeStudentView> gradeGrid = new Grid<>(gradeStudentView.class, false);
 
+    /**
+     * Display current page
+     */
     protected H2 currentPage = new H2("Dashboard");
+
+    /**
+     * Identify Grid
+     */
     protected H3 assTitle = new H3("Assignments");
+
+    /**
+     * Identify Grid
+     */
     protected H3 gradeTitle = new H3("Grades");
     AssignmentStudentviewRepository assignmentRepository;
     GradeStudentRepository gradeRepo;
 
-
-
+    /**
+     * This main function creates the dashboard of the student view. It gets and
+     * displays the name of the current user, formats the grid and grid titles
+     * accordingly, and populates the grids with their respective information.
+     * @param assignmentRepository DB view with relative assignment information
+     * @param gradeRepo DB view with relative grade information
+     */
     public MainStudentView(AssignmentStudentviewRepository assignmentRepository, GradeStudentRepository gradeRepo) {
         this.assignmentRepository = assignmentRepository;
         this.gradeRepo = gradeRepo;
@@ -118,19 +136,18 @@ public class MainStudentView extends VerticalLayout {
     }
 
     private void configureGrid() {
+        //Assignment Grid
         assGrid.addClassNames("assignment-grid");
         assGrid.setWidth("Auto");
-        //adding duplicates(?)
-
         assGrid.addColumn(AssignmentStudentview::getCourseName).setHeader("Course");
         assGrid.addColumn(AssignmentStudentview::getAssignmentName).setHeader("Assignment");
         assGrid.addColumn(AssignmentStudentview::getDueDate).setHeader("Due Date");
         assGrid.getColumns().forEach(col -> col.setAutoWidth(true));
         assGrid.addThemeVariants(GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
 
+        //Grade Grid
         gradeGrid.addClassNames("grade-grid");
         gradeGrid.setWidth("Auto");
-        //adding duplicates(?)
         gradeGrid.addColumn(gradeStudentView::getCourseName).setHeader("Course");
         gradeGrid.addColumn(gradeStudentView::getAssignmentName).setHeader("Assignment");
         gradeGrid.addColumn(gradeStudentView::getGrade).setHeader("Grade");

@@ -58,8 +58,7 @@ public class GradeView extends VerticalLayout{
         Button newGradeButton = new Button("New Grade");
         newGradeButton.addClickListener(event -> addGrade());
 
-        HorizontalLayout button = new HorizontalLayout(newGradeButton);
-        return button;
+        return new HorizontalLayout(newGradeButton);
     }
 
     /**

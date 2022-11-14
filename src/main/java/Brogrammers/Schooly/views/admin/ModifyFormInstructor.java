@@ -1,6 +1,5 @@
 package Brogrammers.Schooly.views.admin;
 
-import Brogrammers.Schooly.Entity.Course;
 import Brogrammers.Schooly.Entity.Instructor;
 import Brogrammers.Schooly.Repository.CourseRepository;
 import com.vaadin.flow.component.ComponentEvent;
@@ -16,10 +15,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
-import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.shared.Registration;
-
-import java.util.List;
 
 import static Brogrammers.Schooly.APIAndOtherMethods.show;
 
@@ -172,8 +168,7 @@ public class ModifyFormInstructor extends FormLayout {
      * @return
      */
     private String getCourseNameByID(Integer courseID){
-        String s = courseRepository.searchByID(courseID);
-        return s;
+        return courseRepository.searchByID(courseID);
     }
 
     /**
@@ -182,8 +177,7 @@ public class ModifyFormInstructor extends FormLayout {
      * @return
      */
     private Integer getCourseIDByName(String courseName){
-        Integer i = courseRepository.searchByName(courseName);
-        return i;
+        return courseRepository.searchByName(courseName);
     }
 
 }
