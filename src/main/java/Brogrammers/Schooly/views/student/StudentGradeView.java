@@ -17,15 +17,31 @@ import com.vaadin.flow.router.Route;
 
 import javax.annotation.security.RolesAllowed;
 
+/**
+ *
+ * @author evanc
+ */
 @Route(value = "grades", layout = AppLayoutNavbarPlacementStudent.class)
 @PageTitle("Grades | Schooly")
 @RolesAllowed("ROLE_STUDENT")
 public class StudentGradeView extends VerticalLayout {
+
+    /**
+     * Grid of student grades
+     */
     protected Grid<gradeStudentView> grid = new Grid<>(gradeStudentView.class, false);
+
+    /**
+     * H2 to display current page title
+     */
     protected H2 currentPage = new H2("Grades");
     GradeStudentRepository courseRepo;
-    //StudAssignRepository studAssignRepository;
 
+    /**
+     * This main function will configure the grid, add all items to the page,
+     * and populate all data for the grid.
+     * @param courseRepo view within the DB to fetch needed information
+     */
     public StudentGradeView(GradeStudentRepository courseRepo) {
         //this.studAssignRepository = studAssignRepository;
         this.courseRepo = courseRepo;
@@ -63,7 +79,6 @@ public class StudentGradeView extends VerticalLayout {
                 GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_ROW_STRIPES);
     }
     private void updateGrid() {
-       // grid.setItems(studAssignRepository.searchStud());
         grid.setItems(courseRepo.search());
     }
 
