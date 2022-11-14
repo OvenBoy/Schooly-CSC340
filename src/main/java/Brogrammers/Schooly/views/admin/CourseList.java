@@ -60,12 +60,18 @@ public class CourseList extends VerticalLayout {
         closeForm();
     }
 
+    /**
+     * This method sets up the form and grid in a vertical format, so on top form and on bottom grid.
+     */
     private Component gridForm() {
         VerticalLayout gridForm = new VerticalLayout(form, grid);
         gridForm.setSizeFull();
         return gridForm;
     }
 
+    /**
+     * This function configures the buttons that are used to navigate through admin accessible views, add and search courses.
+     */
     private Component toolbarConfigure() {
         search.setPlaceholder("Search...");
         search.setClearButtonVisible(true);
@@ -84,6 +90,10 @@ public class CourseList extends VerticalLayout {
         return toolbar;
     }
 
+    /**
+     * When the addCourse button is clicked this functioned is called which clears the selected item in grid
+     * and calls the editCourse function
+     */
     private void addCourse() {
         grid.asSingleSelect().clear();
         editCourse(new Course());

@@ -64,6 +64,9 @@ public class StudentList extends VerticalLayout {
     }
 
 
+    /**
+     * This method sets up the form and grid in a horizontal format, form and grid are next to each other.
+     */
     private Component gridForm() {
         HorizontalLayout gridForm = new HorizontalLayout(grid, form);
         gridForm.setFlexGrow(2, grid);
@@ -94,6 +97,9 @@ public class StudentList extends VerticalLayout {
         closeForm();
     }
 
+    /**
+     * This function configures the buttons that are used to navigate through admin accessible views, add and search students.
+     */
     private Component toolbarConfigure() {
         search.setPlaceholder("Search...");
         search.setClearButtonVisible(true);
@@ -113,6 +119,10 @@ public class StudentList extends VerticalLayout {
         return toolbar;
     }
 
+    /**
+     * When the addStudent button is clicked this functioned is called which clears the selected item in grid
+     * and calls the editStudent function
+     */
     private void addStudent() {
         grid.asSingleSelect().clear();
         editStudent(new Student());

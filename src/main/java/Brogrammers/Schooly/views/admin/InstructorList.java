@@ -69,6 +69,9 @@ public class InstructorList extends VerticalLayout {
         grid.setItems(instructorRepository.search(search.getValue()));
     }
 
+    /**
+     * This method sets up the form and grid in a horizontal format, form and grid are next to each other.
+     */
     private Component gridForm() {
         HorizontalLayout gridForm = new HorizontalLayout(grid, form);
         gridForm.setFlexGrow(2, grid);
@@ -99,6 +102,9 @@ public class InstructorList extends VerticalLayout {
         closeForm();
     }
 
+    /**
+     * This function configures the buttons that are used to navigate through admin accessible views, add and search instructors.
+     */
     private Component toolbarConfigure() {
         search.setPlaceholder("Search...");
         search.setClearButtonVisible(true);
@@ -118,6 +124,10 @@ public class InstructorList extends VerticalLayout {
         return toolbar;
     }
 
+    /**
+     * When the addInstructor button is clicked this functioned is called which clears the selected item in grid
+     * and calls the editInstructor function
+     */
     private void addInstructor() {
         grid.asSingleSelect().clear();
         editInstructor(new Instructor());

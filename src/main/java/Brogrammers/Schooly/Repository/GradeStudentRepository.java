@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface GradeStudentRepository extends JpaRepository<gradeStudentView, String> {
     @Query("select a from gradeStudentView a " +
-            "WHERE studID = 300")
+            "WHERE a.studID = 301")
     List<gradeStudentView> search();
 
 }

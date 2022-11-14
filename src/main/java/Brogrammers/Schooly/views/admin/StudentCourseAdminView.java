@@ -58,6 +58,9 @@ public class StudentCourseAdminView extends VerticalLayout {
 
     }
 
+    /**
+     * This method sets up the form and grid in a vertical format, so on top form and on bottom grid.
+     */
     private Component gridForm() {
         VerticalLayout gridForm = new VerticalLayout(form, grid);
         gridForm.setSizeFull();
@@ -79,6 +82,9 @@ public class StudentCourseAdminView extends VerticalLayout {
         grid.getColumns().forEach(col -> col.setAutoWidth(TRUE));
     }
 
+    /**
+     * This function configures the buttons that are used to navigate through admin accessible views, add and search student and classes.
+     */
     private Component toolbarConfigure() {
         search.setPlaceholder("Search...");
         search.setClearButtonVisible(true);
