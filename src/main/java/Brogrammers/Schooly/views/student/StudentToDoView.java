@@ -25,6 +25,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.binder.BeanValidationBinder;
+import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.*;
 
@@ -36,6 +38,7 @@ import java.util.List;
 @RolesAllowed("ROLE_STUDENT")
 public class StudentToDoView extends VerticalLayout {
     private ToDoStudent todo;
+    Binder<ToDoStudent> binder = new BeanValidationBinder<>(ToDoStudent.class);
 
     protected H2 currentPage = new H2("To-Do");
     protected VerticalLayout todosList = new VerticalLayout();
@@ -68,6 +71,11 @@ public class StudentToDoView extends VerticalLayout {
 
     }
 
+    private void setTodo(ToDoStudent todo){
+        this.todo = todo;
+        binder.readBean(todo);
+    }
+
     private void configHeader() {
         HorizontalLayout header = new HorizontalLayout(
                 currentPage
@@ -91,7 +99,10 @@ public class StudentToDoView extends VerticalLayout {
                             Checkbox checkbox = new Checkbox();
                             checkbox.setValue(todo.isStatus());
                             checkbox.addValueChangeListener(e->{
+                                setTodo(todo);
                                 todo.setStatus(checkbox.getValue());
+                                this.todoRepo.save(todo);
+                                updateGrid();
                             });
                             return checkbox;
                         }
