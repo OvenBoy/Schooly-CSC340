@@ -9,21 +9,27 @@ import Brogrammers.Schooly.views.ToDoForm;
 
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.Key;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.checkbox.CheckboxGroup;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
 
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.listbox.MultiSelectListBox;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.*;
 
 import javax.annotation.security.RolesAllowed;
+import java.util.List;
 
 @Route(value ="to-do", layout = AppLayoutNavbarPlacementStudent.class)
 @PageTitle("To-Do  | Schooly")
@@ -79,11 +85,21 @@ public class StudentToDoView extends VerticalLayout {
         grid.addClassName("todo-grid");
         grid.setSizeFull();
         grid.addColumn(ToDoStudent::getItemName).setHeader("To-Do");
-//        grid.addColumn(ToDoStudent::isStatus).setHeader("Status");
-        ComboBox<ToDoStudent> status = new ComboBox<>("Status");
+        grid.addColumn(
+                new ComponentRenderer<>(
+                        todo -> {
+                            Checkbox checkbox = new Checkbox();
+                            checkbox.setValue(todo.isStatus());
 
+                            return checkbox;
+                        }
+                )
+        ).setHeader("Completed").setKey("hasFiles");
+        grid.addColumn(ToDoStudent::isStatus).setHeader("Status");
+        //status will be removed, need for data-binding debug
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
+
 
     }
 

@@ -32,6 +32,25 @@ public class ToDoStudent {
     @Column(name = "itemName", length = 255)
     private String itemName;
 
+    @Column(name = "Status")
+    private boolean status;
+
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
 
     public String getItemName() {
         return itemName;
