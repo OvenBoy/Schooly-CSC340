@@ -9,12 +9,15 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
+
+import java.util.List;
 
 /**
  * This class is used to set up the GradeForm
@@ -26,6 +29,8 @@ public class GradeForm extends FormLayout {
 
     // Declaring Variables
     private StudAssign studAssign;
+    List<StudAssign> studAssignList;
+    Notification notification;
     StudAssignRepository studAssignRepository;
     Binder<StudAssign> bind = new BeanValidationBinder<>(StudAssign.class);
 
@@ -46,8 +51,9 @@ public class GradeForm extends FormLayout {
      */
     public GradeForm(StudAssignRepository studAssignRepository) {
         addClassName("grade-form");
-
         this.studAssignRepository = studAssignRepository;
+
+        updateList();
         courseID.setAllowCustomValue(true);
         name.setAllowCustomValue(true);
         studID.setAllowCustomValue(true);
@@ -65,7 +71,6 @@ public class GradeForm extends FormLayout {
     private void setComboBox() {
         name.setItems(this.studAssignRepository.searchStudAssignByCourseID(courseID.getValue()));
         studID.setItems(this.studAssignRepository.searchStudIDByCourseID(courseID.getValue()));
-
     }
 
     /**
@@ -83,10 +88,51 @@ public class GradeForm extends FormLayout {
     private void gradeSave() {
         try {
             bind.writeBean(studAssign);
+
+            // error checking
+            if (studAssign.getGrade() == null) {
+                notification = Notification.show("Input a Grade");
+                return;
+            } else if (checkingGrade(studAssign.getStudID(), studAssign.getName()) == 1) {
+                notification = Notification.show("Duplicate grade for Student");
+                return;
+            } else if (studAssign.getCourseID() == null) {
+                notification = Notification.show("Select a course ID");
+                return;
+            } else if (studAssign.getStudID() == null) {
+                notification = Notification.show("Select a student ID");
+                return;
+            } else if (studAssign.getName() == null) {
+                notification = Notification.show("Select an Assignment");
+                return;
+            }
+
             fireEvent(new SavEvent(this, studAssign));
+            setComboBox();
         } catch (ValidationException err) {
             throw new RuntimeException(err);
         }
+    }
+
+    /**
+     * This method is used to check for duplicate grade entries
+     * @param studID student id
+     * @param name assingment name
+     * @return 1 or 0
+     */
+    private Integer checkingGrade(Integer studID, String name) {
+        for (StudAssign studAssign: studAssignList) {
+            if(studAssign.getStudID().equals(studID)) {
+                if(studAssign.getName().equals(name)) {
+                    return 1;
+                }
+            }
+        }
+        return 0;
+    }
+
+    private void updateList() {
+        studAssignList = this.studAssignRepository.findAll();
     }
 
     /**
