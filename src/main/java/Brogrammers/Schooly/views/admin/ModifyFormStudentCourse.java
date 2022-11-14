@@ -18,8 +18,6 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
 
-import java.util.List;
-
 import static Brogrammers.Schooly.APIAndOtherMethods.show;
 
 public class ModifyFormStudentCourse extends FormLayout {

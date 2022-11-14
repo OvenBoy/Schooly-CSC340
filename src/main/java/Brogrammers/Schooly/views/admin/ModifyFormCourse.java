@@ -105,7 +105,6 @@ public class ModifyFormCourse extends FormLayout {
             } else if (!num.equals(0)){
                 course.setCourseID(num);
             }
-            else{};
             notification = show("Deleted " + course.getName());
             fireEvent(new ModifyFormCourse.DeleteEvent(this, course));
             setVisible(false);

@@ -1,13 +1,8 @@
 package Brogrammers.Schooly.views.student;
 
 
-import Brogrammers.Schooly.Entity.AssignmentStudentview;
-import Brogrammers.Schooly.Entity.StudAssign;
 import Brogrammers.Schooly.Entity.gradeStudentView;
-import Brogrammers.Schooly.Repository.AssignmentRepository;
-import Brogrammers.Schooly.Repository.AssignmentStudentviewRepository;
 import Brogrammers.Schooly.Repository.GradeStudentRepository;
-import Brogrammers.Schooly.Repository.StudAssignRepository;
 import Brogrammers.Schooly.views.AppLayoutNavbarPlacementStudent;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;

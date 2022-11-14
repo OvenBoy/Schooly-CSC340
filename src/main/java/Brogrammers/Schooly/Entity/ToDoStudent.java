@@ -1,12 +1,7 @@
 package Brogrammers.Schooly.Entity;
 
-import net.bytebuddy.implementation.bind.annotation.Default;
-import org.hibernate.annotations.Immutable;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 
 /**
  * Mapping for DB view
@@ -29,7 +24,7 @@ public class ToDoStudent {
     private Integer id;
 
     @Size(max = 255)
-    @Column(name = "itemName", length = 255)
+    @Column(name = "itemName")
     private String itemName;
 
     @Column(name = "Status")

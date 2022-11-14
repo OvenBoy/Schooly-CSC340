@@ -11,8 +11,6 @@ import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
-import com.vaadin.flow.component.checkbox.CheckboxGroup;
-import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
 
 import com.vaadin.flow.component.grid.editor.Editor;
@@ -20,7 +18,6 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.listbox.MultiSelectListBox;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -32,7 +29,6 @@ import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.*;
 
 import javax.annotation.security.RolesAllowed;
-import java.util.List;
 
 @Route(value ="to-do", layout = AppLayoutNavbarPlacementStudent.class)
 @PageTitle("To-Do  | Schooly")
@@ -113,30 +109,33 @@ public class StudentToDoView extends VerticalLayout {
         ).setHeader("Completed").setKey("hasFiles");
         TextField ToDoField = new TextField();
         ToDoField.setWidthFull();
+        //Delete Button Action
         Grid.Column<ToDoStudent> editColumn = grid.addComponentColumn(todo -> {
             Button delete = new Button(VaadinIcon.CLOSE.create());
             delete.addThemeVariants(ButtonVariant.LUMO_ICON, ButtonVariant.LUMO_ERROR);
-
             delete.addClickListener(e -> {
                 this.todoRepo.delete(todo);
                 updateGrid();
             });
             return delete;
         }).setWidth("150px").setFlexGrow(0);
-        
+        Binder<ToDoStudent> binder = new Binder<>(ToDoStudent.class);
+        editor.setBinder(binder);
+
+        binder.forField(ToDoField)
+                .bind(ToDoStudent::getItemName, ToDoStudent::setItemName);
+
         addCloseHandler(ToDoField, editor);
         ToDoItem.setEditorComponent(ToDoField);
-
-
+        //Edit Item
         grid.addItemDoubleClickListener(e -> {
             editor.editItem(e.getItem());
             Component editorComponent = e.getColumn().getEditorComponent();
+            this.todo.setItemName("Test");
             if (editorComponent instanceof Focusable) {
                 ((Focusable) editorComponent).focus();
             }
         });
-
-
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
     }
@@ -147,10 +146,6 @@ public class StudentToDoView extends VerticalLayout {
     private void closeForm() {
         form.setToDo(null);
         form.setVisible(false);
-    }
-    private void addToDo() {
-        grid.asSingleSelect().clear();
-        editAssign(new ToDoStudent());
     }
 
     private void editAssign(ToDoStudent todo) {
