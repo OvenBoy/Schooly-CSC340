@@ -60,11 +60,17 @@ public class InstructorList extends VerticalLayout {
         closeForm();
     }
 
+    /**
+     * The method hides the form so that the grid can have more space.
+     */
     private void closeForm() {
         form.setInstructor(null);
         form.setVisible(false);
     }
 
+    /**
+     * This function is called to populate the grid or refresh the grid.
+     */
     private void updateGrid() {
         grid.setItems(instructorRepository.search(search.getValue()));
     }
@@ -80,7 +86,9 @@ public class InstructorList extends VerticalLayout {
         return gridForm;
     }
 
-    //Sidebar
+    /**
+     * This is where we instantiate the form.
+     */
     private void formConfigure() {
         form = new ModifyFormInstructor(this.courseRepository);
         form.setWidth("25em");
@@ -90,12 +98,20 @@ public class InstructorList extends VerticalLayout {
         form.addListener(ModifyFormInstructor.CloseEvent.class, e -> closeForm());
     }
 
+    /**
+     * This function is used to delete the passed instructor from the database.
+     * @param event
+     */
     private void deleteInstructor(ModifyFormInstructor.DeleteEvent event) {
         instructorRepository.delete(event.getInstructor());
         updateGrid();
         closeForm();
     }
 
+    /**
+     * This function is used to save the passed instructor into the database.
+     * @param event
+     */
     private void saveInstructor(ModifyFormInstructor.SaveEvent event) {
         instructorRepository.save(event.getInstructor());
         updateGrid();
@@ -132,6 +148,11 @@ public class InstructorList extends VerticalLayout {
         grid.asSingleSelect().clear();
         editInstructor(new Instructor());
     }
+
+    /**
+     * This function populates the form fields with the instructor that was passed by the calling function.
+     * @param instructor
+     */
     private void editInstructor(Instructor instructor) {
         if(instructor == null){
             closeForm();
@@ -142,6 +163,10 @@ public class InstructorList extends VerticalLayout {
         }
     }
 
+    /**
+     * This function configures the grid, setting up the columns and designs.
+     * When a grid element is clicked, the form is populated by this function so that we can edit the selected element.
+     */
     private void gridConfigure() {
         grid.setSizeFull();
         grid.addColumn(Instructor::getId).setHeader("Instructor ID");

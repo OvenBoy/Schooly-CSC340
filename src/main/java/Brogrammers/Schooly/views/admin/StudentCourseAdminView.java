@@ -68,10 +68,16 @@ public class StudentCourseAdminView extends VerticalLayout {
 
     }
 
+    /**
+     * Updating or populating the grid.
+     */
     private void updateGrid() {
         grid.setItems(studentCourseRepository.search(search.getValue()));
     }
 
+    /**
+     * This function configures the grid, setting up the columns and designs.
+     */
     private void gridConfigure(){
         grid.addColumn(StudentCourse::getStudID).setHeader("Student ID");
         grid.addColumn(StudentCourse::getFName).setHeader("First Name");
@@ -104,12 +110,20 @@ public class StudentCourseAdminView extends VerticalLayout {
         return toolbar;
     }
 
+    /**
+     * When the Modify list button is clicked this functioned is called which clears the selected item in grid
+     * and calls the editStudent function
+     */
     private void addTake() {
         // Clearing the form if populated
         grid.asSingleSelect().clear();
         editStudentCourse(new Take());
     }
 
+    /**
+     * This function populates the form fields with the student and their related courses that was passed by the calling function.
+     * @param take
+     */
     private void editStudentCourse(Take take) {
         if(take == null){
             closeForm();
@@ -120,11 +134,17 @@ public class StudentCourseAdminView extends VerticalLayout {
         }
     }
 
+    /**
+     * Closing the form so that grid is more prominent
+     */
     private void closeForm() {
         form.setTake(null);
         form.setVisible(false);
     }
 
+    /**
+     * This is where we instantiate the form.
+     */
     private void formConfigure() {
         form = new ModifyFormStudentCourse(this.takeRepository);
         form.setWidth("25em");
@@ -134,12 +154,20 @@ public class StudentCourseAdminView extends VerticalLayout {
         form.addListener(ModifyFormStudentCourse.CloseEvent.class, e -> closeForm());
     }
 
+    /**
+     * This function is used to delete the passed student-course combo from the database.
+     * @param event
+     */
     private void deleteStudentCourse(ModifyFormStudentCourse.DeleteEvent event) {
         this.takeRepository.delete(event.getTake());
         updateGrid();
         closeForm();
     }
 
+    /**
+     * This function is used to save the passed student-course combo into the database.
+     * @param event
+     */
     private void saveStudentCourse(ModifyFormStudentCourse.SaveEvent event) {
         this.takeRepository.save(event.getTake());
         updateGrid();

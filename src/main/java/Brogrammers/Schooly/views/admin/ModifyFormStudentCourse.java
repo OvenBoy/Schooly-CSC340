@@ -47,11 +47,18 @@ public class ModifyFormStudentCourse extends FormLayout {
         binder.bindInstanceFields(this);
     }
 
+    /**
+     * Setting up the combo box values with all the available studID and courseID.
+     */
     private void setComboBox() {
         this.studID.setItems(this.takeRepository.searchStudID());
         this.courseId.setItems(this.takeRepository.searchCourseID());
     }
 
+    /**
+     * Designing the form layout and returning this layout.
+     * This form also has clicklisteners.
+     */
     private HorizontalLayout editButtons() {
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
@@ -67,6 +74,11 @@ public class ModifyFormStudentCourse extends FormLayout {
         return new HorizontalLayout(save, delete, cancel);
     }
 
+    /**
+     * This method checks if the text field is filled in properly.
+     * If everything is filled in properly then it is saved.
+     * If not this function notifies error.
+     */
     private void validateAndSave() {
         try {
             binder.writeBean(take);
@@ -87,6 +99,12 @@ public class ModifyFormStudentCourse extends FormLayout {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * This method checks if the text field is filled in properly.
+     * If everything is filled in properly then it is deleted.
+     * If not this function notifies error.
+     */
     private void validateAndDelete(){
         try {
 
@@ -101,11 +119,19 @@ public class ModifyFormStudentCourse extends FormLayout {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * This method fills the text fields with the passed stud-course combo attributes.
+     * @param take
+     */
     public void setTake(Take take) {
         this.take = take;
         binder.readBean(take);
     }
 
+    /**
+     * These subclasses are used to register events like when save, delete and close.
+     */
     public static abstract class ModifyFormStudentCourseEvent extends ComponentEvent<ModifyFormStudentCourse> {
         private Take take;
 
@@ -143,6 +169,12 @@ public class ModifyFormStudentCourse extends FormLayout {
         return getEventBus().addListener(eventType, listener);
     }
 
+    /**
+     * Checking if the given student-course combo doesn't already exist if you are saving.
+     * Checking if the combination exists if you are deleting
+     * @param take
+     * @return
+     */
     private Integer checkingTakeForSaveORDelete(Take take){
         for (Take t:this.takeRepository.findAll()) {
             if(t.getStudID().equals(take.getStudID()) && (t.getCourseID().equals(take.getCourseID()))){

@@ -54,11 +54,17 @@ public class StudentList extends VerticalLayout {
 
     }
 
+    /**
+     * The method hides the form so that the grid can have more space.
+     */
     private void closeForm() {
         form.setStudent(null);
         form.setVisible(false);
     }
 
+    /**
+     * Updating or populating the grid.
+     */
     private void updateGrid() {
         grid.setItems(studentRepository.search(search.getValue()));
     }
@@ -75,7 +81,9 @@ public class StudentList extends VerticalLayout {
         return gridForm;
     }
 
-    //Sidebar
+    /**
+     * This is where we instantiate the form.
+     */
     private void formConfigure() {
         form = new ModifyFormStudent();
         form.setWidth("25em");
@@ -85,12 +93,20 @@ public class StudentList extends VerticalLayout {
         form.addListener(ModifyFormStudent.CloseEvent.class, e -> closeForm());
     }
 
+    /**
+     * This function is used to delete the passed student from the database.
+     * @param event
+     */
     private void deleteStudent(ModifyFormStudent.DeleteEvent event) {
         studentRepository.delete(event.getStudent());
         updateGrid();
         closeForm();
     }
 
+    /**
+     * This function is used to save the passed student into the database.
+     * @param event
+     */
     private void saveStudent(ModifyFormStudent.SaveEvent event) {
         studentRepository.save(event.getStudent());
         updateGrid();
@@ -128,6 +144,10 @@ public class StudentList extends VerticalLayout {
         editStudent(new Student());
     }
 
+    /**
+     * This function configures the grid, setting up the columns and designs.
+     * When a grid element is clicked, the form is populated by this function so that we can edit the selected element.
+     */
     private void gridConfigure() {
         grid.setSizeFull();
         grid.addColumn(Student::getId).setHeader("Student ID");
@@ -141,6 +161,10 @@ public class StudentList extends VerticalLayout {
 
     }
 
+    /**
+     * This function populates the form fields with the student that was passed by the calling function.
+     * @param student
+     */
     private void editStudent(Student student) {
         if(student == null){
             closeForm();

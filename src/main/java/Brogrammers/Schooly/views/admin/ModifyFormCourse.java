@@ -49,10 +49,17 @@ public class ModifyFormCourse extends FormLayout {
         binder.bindInstanceFields(this);
     }
 
+    /**
+     * This function is used to populate the combo boxes.
+     */
     private void updateLists(){
         courseList = this.courseRepository.findAll();
         instructorList = this.instructorRepository.findAll();
     }
+
+    /**
+     * Designing the form layout and returning this layout.
+     */
     private HorizontalLayout editButtons() {
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
@@ -68,6 +75,11 @@ public class ModifyFormCourse extends FormLayout {
         return new HorizontalLayout(save, delete, cancel);
     }
 
+    /**
+     * This method checks if the text field is filled in properly.
+     * If everything is filled in properly then it is saved.
+     * If not this function notifies error.
+     */
     private void validateAndSave() {
         try {
             binder.writeBean(course);
@@ -87,6 +99,11 @@ public class ModifyFormCourse extends FormLayout {
         }
     }
 
+    /**
+     * This method checks if the text field is filled in properly.
+     * If everything is filled in properly then it is deleted.
+     * If not this function notifies error.
+     */
     private void validateAndDelete(){
         Notification notification;
 
@@ -115,11 +132,18 @@ public class ModifyFormCourse extends FormLayout {
         }
     }
 
+    /**
+     * This method fills the text fields with the passed course attributes.
+     * @param course
+     */
     public void setCourse(Course course) {
         this.course = course;
         binder.readBean(course);
     }
 
+    /**
+     * These subclasses are used to register events like when save, delete and close.
+     */
     public static abstract class ModifyFormCourseEvent extends ComponentEvent<ModifyFormCourse> {
         private Course course;
 
@@ -157,6 +181,12 @@ public class ModifyFormCourse extends FormLayout {
         return getEventBus().addListener(eventType, listener);
     }
 
+    /**
+     * This is a helper method to see if the filled in coursename already exists in the database before saving.
+     * Or if we want to delete the course by filling up the form, it returns the courseID of the passed courseName.
+     * @param courseName
+     * @return
+     */
     private Integer checkingCourse(String courseName){
         for (Course course: courseList) {
             if(course.getName().equals(courseName)){
@@ -166,6 +196,11 @@ public class ModifyFormCourse extends FormLayout {
         return 0;
     }
 
+    /**
+     * This method help to determine if it is already assigned to an instructor
+     * @param courseID
+     * @return
+     */
     private Integer checkingDeleteValidationCourse(Integer courseID){
         for(Instructor instructor : instructorList){
             if(instructor.getCourseID() == null){

@@ -52,10 +52,19 @@ public class ModifyFormInstructor extends FormLayout {
         binder.bindInstanceFields(this);
     }
 
+    /**
+     * This method fills the text fields with the passed instructor attributes.
+     * @param instructor
+     */
     public void setInstructor(Instructor instructor){
         this.instructor = instructor;
         binder.readBean(instructor);
     }
+
+    /**
+     * Designing the form layout and returning this layout.
+     * This form also has clicklisteners and value change listeners.
+     */
     private HorizontalLayout editButtons() {
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
@@ -64,6 +73,7 @@ public class ModifyFormInstructor extends FormLayout {
         save.addClickShortcut(Key.ENTER);
         cancel.addClickShortcut(Key.ESCAPE);
 
+        // These two value change listeners are used to populate one if the other is given/selected.
         courseID.addValueChangeListener(e-> courseName.setValue(getCourseNameByID(courseID.getValue())));
         courseName.addValueChangeListener(e-> courseID.setValue(getCourseIDByName(courseName.getValue())));
         save.addClickListener(event -> validateAndSave());
@@ -74,6 +84,11 @@ public class ModifyFormInstructor extends FormLayout {
 
     }
 
+    /**
+     * This method checks if the text field is filled in properly.
+     * If everything is filled in properly then it is saved.
+     * If not this function notifies error.
+     */
     private void validateAndSave() {
         try {
             binder.writeBean(instructor);
@@ -93,11 +108,18 @@ public class ModifyFormInstructor extends FormLayout {
         }
     }
 
+    /**
+     *
+     * This method deletes a instructor and updates the list.
+     */
     private void deleteInst(){
         fireEvent(new DeleteEvent(this, instructor));
         setComboBox();
     }
 
+    /**
+     * These subclasses are used to register events like when save, delete and close.
+     */
     // Events
     public static abstract class ModifyFormInstEvent extends ComponentEvent<ModifyFormInstructor> {
         private Instructor instructor;
@@ -136,15 +158,29 @@ public class ModifyFormInstructor extends FormLayout {
         return getEventBus().addListener(eventType, listener);
     }
 
+    /**
+     * Setting up the combo box values.
+     */
     private void setComboBox(){
         courseID.setItems(courseRepository.searchInstructorFreeCourseID());
         courseName.setItems(courseRepository.searchInstructorFreeCourseName());
     }
 
+    /**
+     * Finding the course name of a given course id.
+     * @param courseID
+     * @return
+     */
     private String getCourseNameByID(Integer courseID){
         String s = courseRepository.searchByID(courseID);
         return s;
     }
+
+    /**
+     * Finding the course ID of a given course name.
+     * @param courseName
+     * @return
+     */
     private Integer getCourseIDByName(String courseName){
         Integer i = courseRepository.searchByName(courseName);
         return i;

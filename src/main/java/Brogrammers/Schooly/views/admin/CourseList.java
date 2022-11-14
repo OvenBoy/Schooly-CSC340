@@ -91,7 +91,7 @@ public class CourseList extends VerticalLayout {
     }
 
     /**
-     * When the addCourse button is clicked this functioned is called which clears the selected item in grid
+     * When the addCourse button is clicked this function is called which clears the selected item in grid
      * and calls the editCourse function
      */
     private void addCourse() {
@@ -99,6 +99,10 @@ public class CourseList extends VerticalLayout {
         editCourse(new Course());
     }
 
+    /**
+     * This function populates the form fields with the course that was passed by the calling function.
+     * @param course
+     */
     private void editCourse(Course course) {
         if(course == null){
             closeForm();
@@ -109,6 +113,10 @@ public class CourseList extends VerticalLayout {
         }
     }
 
+    /**
+     * This function configures the grid, setting up the columns and designs.
+     * When a grid element is clicked, the form is populated by this function so that we can edit the selected element.
+     */
     private void gridConfigure() {
         grid.setSizeFull();
         grid.addColumn(Course::getCourseID).setHeader("Course ID");
@@ -119,6 +127,9 @@ public class CourseList extends VerticalLayout {
         grid.asSingleSelect().addValueChangeListener(e -> editCourse(e.getValue()));
     }
 
+    /**
+     * This is where we instantiate the form.
+     */
     private void formConfigure() {
         form = new ModifyFormCourse(this.courseRepository, this.instructorRepository);
         form.setWidth("25em");
@@ -128,23 +139,37 @@ public class CourseList extends VerticalLayout {
         form.addListener(ModifyFormCourse.CloseEvent.class, e -> closeForm());
     }
 
+    /**
+     * This function is used to save the passed course into the database.
+     * @param event
+     */
     private void saveCourse(ModifyFormCourse.SaveEvent event) {
         courseRepository.save(event.getCourse());
         updateGrid();
         closeForm();
     }
 
+    /**
+     * This function is used to delete the passed course from the database.
+     * @param event
+     */
     private void deleteCourse(ModifyFormCourse.DeleteEvent event) {
         courseRepository.delete(event.getCourse());
         updateGrid();
         closeForm();
     }
 
+    /**
+     * The method hides the form so that the grid can have more space.
+     */
     private void closeForm() {
         form.setCourse(null);
         form.setVisible(false);
     }
 
+    /**
+     * This function is called to populate the grid.
+     */
     private void updateGrid() {
         grid.setItems(courseRepository.search(search.getValue()));
     }

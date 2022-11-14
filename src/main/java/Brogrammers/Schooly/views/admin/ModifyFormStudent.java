@@ -38,11 +38,19 @@ public class ModifyFormStudent extends FormLayout {
         binder.bindInstanceFields(this);
     }
 
+    /**
+     * This method fills the text fields with the passed student attributes.
+     * @param student
+     */
     public void setStudent(Student student){
         this.student = student;
         binder.readBean(student);
     }
 
+    /**
+     * Designing the form layout and returning this layout.
+     * This form also has clicklisteners and value change listeners.
+     */
     private HorizontalLayout editButtons() {
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
@@ -58,6 +66,12 @@ public class ModifyFormStudent extends FormLayout {
         return new HorizontalLayout(save, delete, cancel);
 
     }
+
+    /**
+     * This method checks if the text field is filled in properly.
+     * If everything is filled in properly then it is saved.
+     * If not this function notifies error.
+     */
     private void validateAndSave() {
         try {
             binder.writeBean(student);
@@ -74,7 +88,10 @@ public class ModifyFormStudent extends FormLayout {
             throw new RuntimeException(e);
         }
     }
-    // Events
+
+    /**
+     * These subclasses are used to register events like when save, delete and close.
+     */
     public static abstract class ModifyFormStudEvent extends ComponentEvent<ModifyFormStudent> {
         private Student student;
 
