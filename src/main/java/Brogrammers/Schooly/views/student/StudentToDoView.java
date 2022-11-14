@@ -39,6 +39,7 @@ import java.util.List;
 @RolesAllowed("ROLE_STUDENT")
 public class StudentToDoView extends VerticalLayout {
     private ToDoStudent todo;
+    TextField ToDoField = new TextField();
     Binder<ToDoStudent> binder = new BeanValidationBinder<>(ToDoStudent.class);
 
     protected H2 currentPage = new H2("To-Do");
@@ -111,7 +112,8 @@ public class StudentToDoView extends VerticalLayout {
 
                 )
         ).setHeader("Completed").setKey("hasFiles");
-        TextField ToDoField = new TextField();
+
+
         ToDoField.setWidthFull();
         Grid.Column<ToDoStudent> editColumn = grid.addComponentColumn(todo -> {
             Button delete = new Button(VaadinIcon.CLOSE.create());
@@ -129,17 +131,24 @@ public class StudentToDoView extends VerticalLayout {
 
 
         grid.addItemDoubleClickListener(e -> {
+            editAssign(e.getItem());
             editor.editItem(e.getItem());
             Component editorComponent = e.getColumn().getEditorComponent();
             if (editorComponent instanceof Focusable) {
                 ((Focusable) editorComponent).focus();
             }
         });
+        ToDoField.addValueChangeListener(e->{
+            todo.setItemName(ToDoField.getValue());
+            this.todoRepo.save(todo);
+            updateGrid();
+        });
 
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
     }
+
 
     private void updateGrid() {
         grid.setItems(todoRepo.findAll());
@@ -155,10 +164,9 @@ public class StudentToDoView extends VerticalLayout {
 
     private void editAssign(ToDoStudent todo) {
         if (todo == null) {
-            closeForm();
+            return;
         } else {
-            form.setToDo(todo);
-            form.setVisible(true);
+            this.todo = todo;
         }
     }
 
