@@ -122,6 +122,9 @@ public class StudentToDoView extends VerticalLayout {
             return delete;
         }).setWidth("150px").setFlexGrow(0);
 
+        Binder<ToDoStudent> binder = new Binder<>(ToDoStudent.class);
+        editor.setBinder(binder);
+        binder.forField(ToDoField).bind(ToDoStudent::getItemName, ToDoStudent::setItemName);
         addCloseHandler(ToDoField, editor);
         ToDoItem.setEditorComponent(ToDoField);
         //Edit Item
@@ -129,7 +132,6 @@ public class StudentToDoView extends VerticalLayout {
             editAssign(e.getItem());
             editor.editItem(e.getItem());
             Component editorComponent = e.getColumn().getEditorComponent();
-            this.todo.setItemName("Test");
             if (editorComponent instanceof Focusable) {
                 ((Focusable) editorComponent).focus();
             }
