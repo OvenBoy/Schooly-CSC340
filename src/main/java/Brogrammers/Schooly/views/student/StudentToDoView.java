@@ -30,6 +30,11 @@ import com.vaadin.flow.router.*;
 
 import javax.annotation.security.RolesAllowed;
 
+/**
+ * This view creates the entire to-do page. It creates, validates, deletes, and 
+ * edits to-do entries. 
+ * @author evanc
+ */
 @Route(value ="to-do", layout = AppLayoutNavbarPlacementStudent.class)
 @PageTitle("To-Do  | Schooly")
 @RolesAllowed("ROLE_STUDENT")
@@ -38,7 +43,14 @@ public class StudentToDoView extends VerticalLayout {
     TextField ToDoField = new TextField();
     Binder<ToDoStudent> binder = new BeanValidationBinder<>(ToDoStudent.class);
 
+    /**
+     * H2 to display title of current page
+     */
     protected H2 currentPage = new H2("To-Do");
+
+    /**
+     * VerticalLayout for list items
+     */
     protected VerticalLayout todosList = new VerticalLayout();
     Grid<ToDoStudent> grid = new Grid<>(ToDoStudent.class, false);
     Editor<ToDoStudent> editor = grid.getEditor();
@@ -46,6 +58,13 @@ public class StudentToDoView extends VerticalLayout {
     ToDoForm form;
     ToDoStudentRepository todoRepo;
 
+    /**
+     * This main function of the class initializes a form and instantiates  
+     * a version of todoRepo. Then it configures the form, header, and grid
+     * and adds them to the current page. It will then populate the grid with
+     * all information from the database
+     * @param todoRepo repository of students to-do items
+     */
     public StudentToDoView(ToDoStudentRepository todoRepo) {
         form = new ToDoForm();
         this.todoRepo = todoRepo;
@@ -64,6 +83,7 @@ public class StudentToDoView extends VerticalLayout {
         );
         updateGrid();
     }
+    
     private void setContainerStyles(Div container) {
         container.getStyle().set("display", "flex").set("flex-direction", "row")
                 .set("flex-wrap", "wrap");

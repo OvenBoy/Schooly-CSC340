@@ -18,16 +18,33 @@ import com.vaadin.flow.router.Route;
 import javax.annotation.security.RolesAllowed;
 import java.util.stream.Stream;
 
-
+/**
+ *
+ * @author evanc
+ */
 @Route(value ="assignments", layout = AppLayoutNavbarPlacementStudent.class)
 @PageTitle("Assignments | Schooly")
 @RolesAllowed("ROLE_STUDENT")
 public class StudentAssignmentView extends VerticalLayout {
+
+    /**
+     * Grid for assignments
+     */
     protected Grid<AssignmentStudentview> grid = new Grid<>(AssignmentStudentview.class, false);
+
+    /**
+     * H2 to display current page title
+     */
     protected H2 currentPage = new H2("Assignments");
     AssignmentStudentviewRepository assignmentRepository;
-    //CourseRepository courseRepo;
 
+    /**
+     * This main function will configure the grid of assignments, create a 
+     * detail renderer, add all items to webpage, and populate the grid
+     * with prevalent assignment information.
+     * @param assignmentRepository view within DB that allows all information
+     * to be displayed for assignment
+     */
     public StudentAssignmentView(AssignmentStudentviewRepository assignmentRepository) {
         this.assignmentRepository = assignmentRepository;
         addClassName("stu-assignment-view");
@@ -63,6 +80,7 @@ public class StudentAssignmentView extends VerticalLayout {
     private void updateGrid() {
         grid.setItems(assignmentRepository.findAll());
     }
+    
     private static class AssignmentPageFormLayout extends FormLayout{
         private final TextField courseTitle = new TextField("Course Title");
         private final TextField assignmentTitle = new TextField("Assignment");
