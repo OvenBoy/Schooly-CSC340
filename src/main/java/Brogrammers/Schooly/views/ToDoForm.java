@@ -77,11 +77,4 @@ public class ToDoForm extends FormLayout {
             super(source, toDoStudent);
         }
     }
-
-    public static class CheckBox{
-
-    }
-    public void checkBox(){
-        //bind.bind(checkbox, booleanValueProvider, booleanSetter);
-    }
 }

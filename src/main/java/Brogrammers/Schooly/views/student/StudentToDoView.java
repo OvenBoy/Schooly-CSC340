@@ -7,9 +7,7 @@ import Brogrammers.Schooly.views.AppLayoutNavbarPlacementStudent;
 
 import Brogrammers.Schooly.views.ToDoForm;
 
-import com.vaadin.flow.component.ComponentEvent;
-import com.vaadin.flow.component.Key;
-import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
@@ -96,7 +94,7 @@ public class StudentToDoView extends VerticalLayout {
     private void configGrid() {
         grid.addClassName("todo-grid");
         grid.setSizeFull();
-        grid.addColumn(ToDoStudent::getItemName).setHeader("To-Do");
+        Grid.Column<ToDoStudent> ToDoItem = grid.addColumn(ToDoStudent::getItemName).setHeader("To-Do");
         grid.addColumn(
                 new ComponentRenderer<>(
                         todo -> {
@@ -113,15 +111,33 @@ public class StudentToDoView extends VerticalLayout {
 
                 )
         ).setHeader("Completed").setKey("hasFiles");
+        TextField ToDoField = new TextField();
+        ToDoField.setWidthFull();
+        Grid.Column<ToDoStudent> editColumn = grid.addComponentColumn(todo -> {
+            Button delete = new Button(VaadinIcon.CLOSE.create());
+            delete.addThemeVariants(ButtonVariant.LUMO_ICON, ButtonVariant.LUMO_ERROR);
 
-       
+            delete.addClickListener(e -> {
+                this.todoRepo.delete(todo);
+                updateGrid();
+            });
+            return delete;
+        }).setWidth("150px").setFlexGrow(0);
+        
+        addCloseHandler(ToDoField, editor);
 
-        grid.addColumn(ToDoStudent::isStatus).setHeader("Status");
-        //status will be removed, need for data-binding debug
 
+        ToDoItem.setEditorComponent(ToDoField);
+
+        grid.addItemDoubleClickListener(e -> {
+            editor.editItem(e.getItem());
+            Component editorComponent = e.getColumn().getEditorComponent();
+            if (editorComponent instanceof Focusable) {
+                ((Focusable) editorComponent).focus();
+            }
+        });
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
-
 
     }
 
@@ -154,6 +170,12 @@ public class StudentToDoView extends VerticalLayout {
     private void saveTodo(ToDoForm.SaveEvent event) {
         todoRepo.save(event.getToDo());
         updateGrid();
+    }
+
+    private static void addCloseHandler(Component textField,
+                                        Editor<ToDoStudent> editor) {
+        textField.getElement().addEventListener("keydown", e -> editor.cancel())
+                .setFilter("event.code === 'Enter'");
     }
 
 }
