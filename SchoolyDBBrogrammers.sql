@@ -110,6 +110,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 
 CREATE TABLE `todo` (
   `ID` int(11) NOT NULL,
---   `status` tinyint(1) NOT NULL,
-  `item_name` varchar(255) NOT NULL
-) 
+  `item_name` varchar(255) NOT NULL,
+  `todoid` int(11) NOT NULL,
+  `status` tinyint(1) NOT NULL
+)

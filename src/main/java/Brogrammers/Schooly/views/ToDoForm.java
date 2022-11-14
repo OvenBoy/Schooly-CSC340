@@ -4,8 +4,10 @@ import Brogrammers.Schooly.Entity.StudAssign;
 import Brogrammers.Schooly.Entity.Student;
 import Brogrammers.Schooly.Entity.ToDoStudent;
 import Brogrammers.Schooly.views.admin.ModifyFormStudent;
+import Brogrammers.Schooly.views.student.StudentToDoView;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -30,6 +32,8 @@ public class ToDoForm extends FormLayout {
     public ToDoForm() {
         add(itemName, save);
         save.addClickListener(event-> save());
+        //BIND TO DATABASE
+        //bind.bind(checkbox, ToDoStudent::isStatus, ToDoStudent::setStatus);
     }
 
 
@@ -70,5 +74,12 @@ public class ToDoForm extends FormLayout {
         SaveEvent(ToDoForm source, ToDoStudent toDoStudent) {
             super(source, toDoStudent);
         }
+    }
+
+    public static class CheckBox{
+
+    }
+    public void checkBox(){
+        //bind.bind(checkbox, booleanValueProvider, booleanSetter);
     }
 }
