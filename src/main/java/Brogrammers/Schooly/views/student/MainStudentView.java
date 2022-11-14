@@ -1,13 +1,9 @@
 package Brogrammers.Schooly.views.student;
 
-import Brogrammers.Schooly.Entity.Assignment;
 import Brogrammers.Schooly.Entity.AssignmentStudentview;
-import Brogrammers.Schooly.Entity.StudAssign;
 import Brogrammers.Schooly.Entity.gradeStudentView;
-import Brogrammers.Schooly.Repository.AssignmentRepository;
 import Brogrammers.Schooly.Repository.AssignmentStudentviewRepository;
 import Brogrammers.Schooly.Repository.GradeStudentRepository;
-import Brogrammers.Schooly.Repository.StudAssignRepository;
 import Brogrammers.Schooly.views.AppLayoutNavbarPlacementStudent;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.H2;
@@ -20,16 +16,11 @@ import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.component.grid.Grid;
 
-import data.entity.Grades;
 import data.entity.Stu_AssignmentDetailsFormLayout;
-import data.entity.Stu_Assignments;
-import data.entity.Stu_Grades;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.annotation.security.RolesAllowed;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Route(value = "student", layout= AppLayoutNavbarPlacementStudent.class)

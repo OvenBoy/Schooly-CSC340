@@ -1,6 +1,5 @@
 package data.entity;
 
-import Brogrammers.Schooly.Entity.Assignment;
 import Brogrammers.Schooly.Entity.AssignmentStudentview;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -31,8 +30,6 @@ public class Stu_AssignmentDetailsFormLayout extends FormLayout {
                 assignmentTitle.setValue(assignment.getAssignmentName());
                 dueDate.setValue(assignment.getDueDate().toString());
                 description.setValue(assignment.getDescription());
-                //time.setValue(assignment.getTime());
-                //possPoints.setValue(assignment.getPossiblePoints());
 
         }
 

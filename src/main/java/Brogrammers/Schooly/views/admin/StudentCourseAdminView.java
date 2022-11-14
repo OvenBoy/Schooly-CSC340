@@ -99,9 +99,7 @@ public class StudentCourseAdminView extends VerticalLayout {
         logout.addThemeVariants(ButtonVariant.LUMO_ERROR);
         addStudentCourse.addClickListener(e -> addTake());
 
-        HorizontalLayout toolbar = new HorizontalLayout(instNavigationButton,studNavigationButton,courseNavigationButton, search, addStudentCourse, logout);
-
-        return toolbar;
+        return new HorizontalLayout(instNavigationButton,studNavigationButton,courseNavigationButton, search, addStudentCourse, logout);
     }
 
     private void addTake() {

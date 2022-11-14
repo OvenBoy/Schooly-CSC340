@@ -31,10 +31,9 @@ public class AppLayoutNavbarPlacement extends AppLayout {
 
     /**
      * This is the main method for the class
-     * @param securityService
-     * @throws JSONException
+     * @param securityService security service information
      */
-    public AppLayoutNavbarPlacement(SecurityService securityService) throws JSONException {
+    public AppLayoutNavbarPlacement(SecurityService securityService) {
         this.securityService = securityService;
         DrawerToggle toggle = new DrawerToggle();
 
@@ -63,10 +62,10 @@ public class AppLayoutNavbarPlacement extends AppLayout {
      */
     private Tabs getTabs() {
         Tabs tabs = new Tabs();
-        tabs.add(createTab1(VaadinIcon.USER, "Students"),
-                createTab2(VaadinIcon.LIST, "Assignments"),
-                createTab3(VaadinIcon.CHART, "Grades"),
-                createTab4(VaadinIcon.ARCHIVE, "Courses")
+        tabs.add(createTab1(),
+                createTab2(),
+                createTab3(),
+                createTab4()
         );
 
         tabs.setOrientation(Tabs.Orientation.VERTICAL);
@@ -75,19 +74,18 @@ public class AppLayoutNavbarPlacement extends AppLayout {
 
     /**
      * This method is used to set up the main teacher page link
-     * @param viewIcon is the icon for the link
-     * @param viewName is the name for the link
+     *
      * @return configured link
      */
-    private Tab createTab1(VaadinIcon viewIcon, String viewName) {
-        Icon icon = viewIcon.create();
+    private Tab createTab1() {
+        Icon icon = VaadinIcon.USER.create();
         icon.getStyle().set("box-sizing", "border-box")
                 .set("margin-inline-end", "var(--lumo-space-m)")
                 .set("margin-inline-start", "var(--lumo-space-xs)")
                 .set("padding", "var(--lumo-space-xs)");
 
         RouterLink link = new RouterLink();
-        link.add(icon, new Span(viewName));
+        link.add(icon, new Span("Students"));
         link.setRoute(MainTeacherView.class);
         link.setTabIndex(-1);
 
@@ -96,19 +94,18 @@ public class AppLayoutNavbarPlacement extends AppLayout {
 
     /**
      * This method is used to set up the AssignmentView link
-     * @param viewIcon is the icon for the link
-     * @param viewName is the name for the link
+     *
      * @return configured link
      */
-    private Tab createTab2(VaadinIcon viewIcon, String viewName) {
-        Icon icon = viewIcon.create();
+    private Tab createTab2() {
+        Icon icon = VaadinIcon.LIST.create();
         icon.getStyle().set("box-sizing", "border-box")
                 .set("margin-inline-end", "var(--lumo-space-m)")
                 .set("margin-inline-start", "var(--lumo-space-xs)")
                 .set("padding", "var(--lumo-space-xs)");
 
         RouterLink link = new RouterLink();
-        link.add(icon, new Span(viewName));
+        link.add(icon, new Span("Assignments"));
         link.setRoute(AssignmentView.class);
         link.setTabIndex(-1);
 
@@ -117,19 +114,18 @@ public class AppLayoutNavbarPlacement extends AppLayout {
 
     /**
      * This method is used to set up the GradeView link
-     * @param viewIcon is the icon for the link
-     * @param viewName is the name for the link
+     *
      * @return configured link
      */
-    private Tab createTab3(VaadinIcon viewIcon, String viewName) {
-        Icon icon = viewIcon.create();
+    private Tab createTab3() {
+        Icon icon = VaadinIcon.CHART.create();
         icon.getStyle().set("box-sizing", "border-box")
                 .set("margin-inline-end", "var(--lumo-space-m)")
                 .set("margin-inline-start", "var(--lumo-space-xs)")
                 .set("padding", "var(--lumo-space-xs)");
 
         RouterLink link = new RouterLink();
-        link.add(icon, new Span(viewName));
+        link.add(icon, new Span("Grades"));
         link.setRoute(GradeView.class);
         link.setTabIndex(-1);
 
@@ -138,19 +134,18 @@ public class AppLayoutNavbarPlacement extends AppLayout {
 
     /**
      * This method is used to set up the CourseView link
-     * @param viewIcon is the icon for the link
-     * @param viewName is the name for the link
+     *
      * @return configured link
      */
-    private Tab createTab4(VaadinIcon viewIcon, String viewName) {
-        Icon icon = viewIcon.create();
+    private Tab createTab4() {
+        Icon icon = VaadinIcon.ARCHIVE.create();
         icon.getStyle().set("box-sizing", "border-box")
                 .set("margin-inline-end", "var(--lumo-space-m)")
                 .set("margin-inline-start", "var(--lumo-space-xs)")
                 .set("padding", "var(--lumo-space-xs)");
 
         RouterLink link = new RouterLink();
-        link.add(icon, new Span(viewName));
+        link.add(icon, new Span("Courses"));
         link.setRoute(CourseView.class);
         link.setTabIndex(-1);
 

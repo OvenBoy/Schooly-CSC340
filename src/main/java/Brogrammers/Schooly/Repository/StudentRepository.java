@@ -1,7 +1,6 @@
 package Brogrammers.Schooly.Repository;
 
 
-import Brogrammers.Schooly.Entity.Instructor;
 import Brogrammers.Schooly.Entity.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
