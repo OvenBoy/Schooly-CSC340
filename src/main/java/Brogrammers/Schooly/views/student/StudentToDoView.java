@@ -125,9 +125,8 @@ public class StudentToDoView extends VerticalLayout {
         }).setWidth("150px").setFlexGrow(0);
         
         addCloseHandler(ToDoField, editor);
-
-
         ToDoItem.setEditorComponent(ToDoField);
+
 
         grid.addItemDoubleClickListener(e -> {
             editor.editItem(e.getItem());
@@ -136,6 +135,7 @@ public class StudentToDoView extends VerticalLayout {
                 ((Focusable) editorComponent).focus();
             }
         });
+
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
