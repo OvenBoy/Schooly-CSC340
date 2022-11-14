@@ -90,13 +90,17 @@ public class StudentToDoView extends VerticalLayout {
                         todo -> {
                             Checkbox checkbox = new Checkbox();
                             checkbox.setValue(todo.isStatus());
-
+                            checkbox.addValueChangeListener(e->{
+                                todo.setStatus(checkbox.getValue());
+                            });
                             return checkbox;
                         }
+
                 )
         ).setHeader("Completed").setKey("hasFiles");
         grid.addColumn(ToDoStudent::isStatus).setHeader("Status");
         //status will be removed, need for data-binding debug
+
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
