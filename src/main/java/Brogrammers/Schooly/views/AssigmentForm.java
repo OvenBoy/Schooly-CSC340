@@ -15,7 +15,15 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
 
+/**
+ * This class is used to construct the form for the instructor AssignmentView
+ *
+ * Last Edited: 11/13/2022
+ * Edited By: Andrew Van Es
+ */
 public class AssigmentForm extends FormLayout {
+
+    // Declaring Variables
     private Assignment assignment;
     Binder<Assignment> binder = new BeanValidationBinder<>(Assignment.class);
 
@@ -31,17 +39,28 @@ public class AssigmentForm extends FormLayout {
     Button delete = new Button("Delete");
     Button close = new Button("Cancel");
 
+    /**
+     * This method is the main method.
+     */
     public AssigmentForm() {
         addClassName("Assignment-form");
         add(name,courseID,description,dueDate,createButtonsLayout());
         binder.bindInstanceFields(this);
     }
 
+    /**
+     * This method is used to set new assignment
+     * @param assignment used to set the entry into the database
+     */
     public void setAssignment(Assignment assignment) {
         this.assignment = assignment;
         binder.readBean(assignment);
     }
 
+    /**
+     * This method is used to map the buttons with the functions.
+     * @return the layout/configuration of the buttons
+     */
     private HorizontalLayout createButtonsLayout() {
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
@@ -57,6 +76,9 @@ public class AssigmentForm extends FormLayout {
         return new HorizontalLayout(save, delete, close);
     }
 
+    /**
+     * This method is used for events within the form
+     */
     public static abstract class AssignmentFormEvent extends ComponentEvent<AssigmentForm> {
         private Assignment assignment;
         protected AssignmentFormEvent(AssigmentForm source, Assignment assignment) {
@@ -67,6 +89,10 @@ public class AssigmentForm extends FormLayout {
             return assignment;
         }
     }
+
+    /**
+     * This method is called for writing new entry for the database.
+     */
     private void valAndSave() {
         try {
             binder.writeBean(assignment);
@@ -77,17 +103,35 @@ public class AssigmentForm extends FormLayout {
 
     }
 
+    /**
+     * This is an event for when there is a close event
+     * and closes the form without saving
+     */
     public static class CloseEvent extends AssignmentFormEvent {
         CloseEvent(AssigmentForm source) {super(source, null); }
     }
 
+    /**
+     * This is an event for when an Assignment is deleted by the user
+     */
     public static class DeleteEvent extends AssignmentFormEvent {
         DeleteEvent(AssigmentForm source, Assignment assignment) { super(source, assignment); }
     }
 
+    /**
+     * This is an event for when someone save a new or edited assignment.
+     */
     public static class SaveEvent extends AssignmentFormEvent {
         SaveEvent(AssigmentForm source, Assignment assignment) { super(source, assignment); }
     }
+
+    /**
+     * This method is used to set up the listeners.
+     * @param eventType
+     * @param listener
+     * @return
+     * @param <T>
+     */
     public <T extends ComponentEvent<?>> Registration addListener(Class<T> eventType, ComponentEventListener<T> listener) {
         return getEventBus().addListener(eventType, listener);
     }

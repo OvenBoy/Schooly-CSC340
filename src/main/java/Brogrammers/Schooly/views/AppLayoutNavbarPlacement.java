@@ -19,13 +19,21 @@ import org.json.JSONException;
 
 import javax.annotation.security.PermitAll;
 
-/*
-Creates the Navigation bar for the App
+/**
+ * This Class is used to create the navbar for the instructor views.
+ *
+ * Last Edited: 11/14/2022
+ * Edited By: Andrew Van Es
  */
 @PermitAll
 public class AppLayoutNavbarPlacement extends AppLayout {
     private final SecurityService securityService;
 
+    /**
+     * This is the main method for the class
+     * @param securityService
+     * @throws JSONException
+     */
     public AppLayoutNavbarPlacement(SecurityService securityService) throws JSONException {
         this.securityService = securityService;
         DrawerToggle toggle = new DrawerToggle();
@@ -49,8 +57,9 @@ public class AppLayoutNavbarPlacement extends AppLayout {
         addToNavbar(config);
     }
 
-    /*
-    Creates NavTabs
+    /**
+     * This method is used to set up the navigation tabs for the nav bar
+     * @return tabs configuration
      */
     private Tabs getTabs() {
         Tabs tabs = new Tabs();
@@ -64,8 +73,11 @@ public class AppLayoutNavbarPlacement extends AppLayout {
         return tabs;
     }
 
-    /*
-    MainTeacherView Page
+    /**
+     * This method is used to set up the main teacher page link
+     * @param viewIcon is the icon for the link
+     * @param viewName is the name for the link
+     * @return configured link
      */
     private Tab createTab1(VaadinIcon viewIcon, String viewName) {
         Icon icon = viewIcon.create();
@@ -82,8 +94,11 @@ public class AppLayoutNavbarPlacement extends AppLayout {
         return new Tab(link);
     }
 
-    /*
-    AssignmentView Page
+    /**
+     * This method is used to set up the AssignmentView link
+     * @param viewIcon is the icon for the link
+     * @param viewName is the name for the link
+     * @return configured link
      */
     private Tab createTab2(VaadinIcon viewIcon, String viewName) {
         Icon icon = viewIcon.create();
@@ -100,8 +115,11 @@ public class AppLayoutNavbarPlacement extends AppLayout {
         return new Tab(link);
     }
 
-    /*
-    GradeView Page
+    /**
+     * This method is used to set up the GradeView link
+     * @param viewIcon is the icon for the link
+     * @param viewName is the name for the link
+     * @return configured link
      */
     private Tab createTab3(VaadinIcon viewIcon, String viewName) {
         Icon icon = viewIcon.create();
@@ -118,8 +136,11 @@ public class AppLayoutNavbarPlacement extends AppLayout {
         return new Tab(link);
     }
 
-    /*
-    Course Teacher page
+    /**
+     * This method is used to set up the CourseView link
+     * @param viewIcon is the icon for the link
+     * @param viewName is the name for the link
+     * @return configured link
      */
     private Tab createTab4(VaadinIcon viewIcon, String viewName) {
         Icon icon = viewIcon.create();
