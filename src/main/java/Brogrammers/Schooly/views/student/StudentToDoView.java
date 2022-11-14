@@ -11,14 +11,17 @@ import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
 
+import com.vaadin.flow.component.grid.editor.Editor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.listbox.MultiSelectListBox;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -40,6 +43,7 @@ public class StudentToDoView extends VerticalLayout {
     protected H2 currentPage = new H2("To-Do");
     protected VerticalLayout todosList = new VerticalLayout();
     Grid<ToDoStudent> grid = new Grid<>(ToDoStudent.class, false);
+    Editor<ToDoStudent> editor = grid.getEditor();
 
     ToDoForm form;
     ToDoStudentRepository todoRepo;
@@ -98,6 +102,9 @@ public class StudentToDoView extends VerticalLayout {
 
                 )
         ).setHeader("Completed").setKey("hasFiles");
+
+       
+
         grid.addColumn(ToDoStudent::isStatus).setHeader("Status");
         //status will be removed, need for data-binding debug
 
