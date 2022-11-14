@@ -121,6 +121,7 @@ public class MainStudentView extends VerticalLayout {
         assGrid.addClassNames("assignment-grid");
         assGrid.setWidth("Auto");
         //adding duplicates(?)
+
         assGrid.addColumn(AssignmentStudentview::getCourseName).setHeader("Course");
         assGrid.addColumn(AssignmentStudentview::getAssignmentName).setHeader("Assignment");
         assGrid.addColumn(AssignmentStudentview::getDueDate).setHeader("Due Date");
