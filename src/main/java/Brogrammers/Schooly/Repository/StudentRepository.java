@@ -13,4 +13,8 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
             "where lower(s.fName) like lower(concat('%', :searchTerm, '%')) " +
             "or lower(s.lName) like lower(concat('%', :searchTerm, '%'))")
     List<Student> search(@Param("searchTerm") String searchTerm);
+
+    @Query("select s from Student s inner join Take t on t.studID = s.id" +
+            " where t.courseID = 1")
+    List<Student>searchStudentByCourseID();
 }

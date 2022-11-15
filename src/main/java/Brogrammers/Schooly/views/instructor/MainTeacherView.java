@@ -72,6 +72,6 @@ public class MainTeacherView extends VerticalLayout{
      * This method is used to update the grid with new entries
      */
     private void updateList() {
-        grid.setItems(studentRepository.findAll());
+        grid.setItems(studentRepository.searchStudentByCourseID());
     }
 }
