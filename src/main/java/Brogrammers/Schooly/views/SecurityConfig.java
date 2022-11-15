@@ -13,6 +13,13 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 import com.vaadin.flow.spring.security.VaadinWebSecurity;
 
+/**
+ * This is the Security Configuration class it is used to create the users credentials
+ * and assign permissions.
+ *
+ * Last Edited: 11/14/2022
+ * Edited By: Andrew van Es, Evan Corsar
+ */
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig extends VaadinWebSecurity {
@@ -21,16 +28,12 @@ public class SecurityConfig extends VaadinWebSecurity {
     static SimpleGrantedAuthority student = new SimpleGrantedAuthority("ROLE_STUDENT");
 
     private static class SimpleInMemoryUserDetailsManager extends InMemoryUserDetailsManager {
-
-
         public SimpleInMemoryUserDetailsManager() {
             createUser(new User("instructor", "{noop}userpass", Collections.singleton(teacher)));
             createUser(new User("admin", "{noop}userpass", Collections.singleton(admin)));
             createUser(new User("student", "{noop}userpass", Collections.singleton(student)));
 
         }
-
-
     }
 
     @Override

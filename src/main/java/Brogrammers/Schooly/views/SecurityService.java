@@ -8,6 +8,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Component;
 
+/**
+ * This class is used to handle the logout and redirects the user back to the login page
+ *
+ * Last Edited: 11/14/2022
+ * Edited By: Andrew Van Es
+ */
 @Component
 public class SecurityService {
 
@@ -23,6 +29,10 @@ public class SecurityService {
         return null;
     }
 
+    /**
+     * This method is used whenever there is a log-out event and sends a user back
+     * to the login screen
+     */
     public void logout() {
         UI.getCurrent().getPage().setLocation(LOGOUT_SUCCESS_URL);
         SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();

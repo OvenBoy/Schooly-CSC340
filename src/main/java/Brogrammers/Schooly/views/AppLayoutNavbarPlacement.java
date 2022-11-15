@@ -19,6 +19,8 @@ import org.json.JSONException;
 
 import javax.annotation.security.PermitAll;
 
+import static Brogrammers.Schooly.APIAndOtherMethods.getWeather;
+
 /**
  * This Class is used to create the navbar for the instructor views.
  *
@@ -33,13 +35,13 @@ public class AppLayoutNavbarPlacement extends AppLayout {
      * This is the main method for the class
      * @param securityService security service information
      */
-    public AppLayoutNavbarPlacement(SecurityService securityService) {
+    public AppLayoutNavbarPlacement(SecurityService securityService) throws JSONException{
         this.securityService = securityService;
         DrawerToggle toggle = new DrawerToggle();
 
         H1 title = new H1("Schooly Teacher View ");
-        H2 weather = new H2("Weather");
-        //H1 weather = new H1(getWeather());
+        //H2 weather = new H2("Weather");
+        H1 weather = new H1(getWeather());
 
         title.getStyle().set("font-size", "var(--lumo-font-size-l)").set("margin", "0");
         weather.getStyle().set("font-size", "var(--lumo-font-size-l)").set("margin", "0");

@@ -27,9 +27,4 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
     Integer searchByName(@Param("name") String name);
 
 
-
-
-
-
-
 }

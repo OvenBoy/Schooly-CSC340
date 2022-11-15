@@ -102,8 +102,8 @@ public class GradeForm extends FormLayout {
             } else if (studAssign.getName() == null) {
                 notification = Notification.show("Select an Assignment");
                 return;
-            } else if (checkingGrade(studAssign.getStudID(), studAssign.getName(), studAssign.getGrade(), studAssign.getCourseID()) == 1) {
-                notification = Notification.show("Duplicate grade for Student");
+            } else if (checkingGrade(studAssign.getStudID(), studAssign.getName(), studAssign.getCourseID(), studAssign.getGrade()) == 1) {
+                notification = Notification.show("Duplicate grade entry for Student");
                 return;
             }
 
@@ -120,9 +120,9 @@ public class GradeForm extends FormLayout {
      * @param name assingment name
      * @return 1 or 0
      */
-    private Integer checkingGrade(int studID, String name, int grade, int courseID) {
+    private Integer checkingGrade(int studID, String name, int courseID, int grade) {
         for (StudAssign studAssign: studAssignList) {
-            if(studAssign.getStudID().equals(studID) && studAssign.getName().equals(name) && studAssign.getGrade().equals(grade) && studAssign.getCourseID().equals(courseID)) {
+            if(studAssign.getStudID().equals(studID) && studAssign.getName().equals(name) && studAssign.getCourseID().equals(courseID) && studAssign.getGrade().equals(grade)) {
                 return 1;
             }
         }

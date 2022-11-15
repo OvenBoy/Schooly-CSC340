@@ -13,6 +13,13 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
+/**
+ * This Class is the constructor for the login page. which handles the
+ * creation of the view
+ *
+ * Last Edited: 11/14/2022
+ * Edited By: Andrew Van Es
+ */
 @Route("login")
 @PageTitle("Login | Schooly")
 @AnonymousAllowed
@@ -20,6 +27,9 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 	private final LoginForm login = new LoginForm();
 
+	/**
+	 * This is the main method for the LoginView
+	 */
 	public LoginView() {
 		addClassName("login-view");
 		setSizeFull();
@@ -29,6 +39,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
 		login.setAction("login");
 
+		// checks which user is logged in
 		login.addLoginListener(e -> {
 			if("admin".equals(e.getUsername())){
 				UI.getCurrent().navigate(InstructorList.class);
@@ -58,6 +69,11 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 		add(logo, login);
 	}
 
+	/**
+	 * This method is used for an verification event if the user enters
+	 * the wrong credentials
+	 * @param beforeEnterEvent
+	 */
 	@Override
 	public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
 		// inform the user about an authentication error
