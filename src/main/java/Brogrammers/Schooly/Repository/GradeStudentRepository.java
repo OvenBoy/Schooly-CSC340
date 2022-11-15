@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface GradeStudentRepository extends JpaRepository<gradeStudentView, String> {
     @Query("select a from gradeStudentView a " +
-            "WHERE a.studID = 301")
+            "WHERE a.studID = 9")
     List<gradeStudentView> search();
 
 }

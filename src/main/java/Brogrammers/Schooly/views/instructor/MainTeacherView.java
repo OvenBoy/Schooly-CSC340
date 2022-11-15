@@ -49,9 +49,11 @@ public class MainTeacherView extends VerticalLayout{
         grid.addClassNames("contact-grid");
         grid.setSizeFull();
 
+        grid.addColumn(Student::getId).setHeader("Student ID");
         grid.addColumn(Student::getFName).setHeader("First Name");
         grid.addColumn(Student::getLName).setHeader("Last Name");
         grid.addColumn(Student::getEmail).setHeader(("Email"));
+
 
         grid.getColumns().forEach(col -> col.setAutoWidth(TRUE));
 

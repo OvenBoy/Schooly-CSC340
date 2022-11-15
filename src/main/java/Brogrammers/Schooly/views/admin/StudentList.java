@@ -21,6 +21,7 @@ import org.json.JSONException;
 
 import javax.annotation.security.RolesAllowed;
 
+import static Brogrammers.Schooly.APIAndOtherMethods.getWeather;
 import static java.lang.Boolean.TRUE;
 
 //@RolesAllowed("ROLE_ADMIN")
@@ -34,14 +35,13 @@ public class StudentList extends VerticalLayout {
     ModifyFormStudent form;
     private final SecurityService securityService;
 
-    public StudentList(StudentRepository studentRepository, SecurityService securityService) {
+    public StudentList(StudentRepository studentRepository, SecurityService securityService) throws JSONException {
         this.studentRepository = studentRepository;
         this.securityService = securityService;
         setSizeFull();
         gridConfigure();
         formConfigure();
-//        String api = "Welcome admin! " + getWeather();
-        String api = "Weather";
+        String api = "Welcome admin! " + getWeather();
         HorizontalLayout headers = new HorizontalLayout(new H2("Schooly"), new H6(api));
         headers.setAlignItems(Alignment.BASELINE);
         headers.setSpacing(TRUE);

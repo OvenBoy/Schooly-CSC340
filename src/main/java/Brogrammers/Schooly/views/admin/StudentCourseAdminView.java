@@ -18,9 +18,11 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.json.JSONException;
 
 import javax.annotation.security.RolesAllowed;
 
+import static Brogrammers.Schooly.APIAndOtherMethods.getWeather;
 import static java.lang.Boolean.TRUE;
 
 @PageTitle("Admin-Student-Course")
@@ -36,7 +38,7 @@ public class StudentCourseAdminView extends VerticalLayout {
     private SecurityService securityService;
 
 
-    public StudentCourseAdminView(StudentCourseRepository studentCourseRepository, SecurityService securityService, TakeRepository takeRepository) {
+    public StudentCourseAdminView(StudentCourseRepository studentCourseRepository, SecurityService securityService, TakeRepository takeRepository) throws JSONException {
         this.studentCourseRepository = studentCourseRepository;
         this.securityService = securityService;
         this.takeRepository = takeRepository;
@@ -44,8 +46,7 @@ public class StudentCourseAdminView extends VerticalLayout {
         setSizeFull();
         gridConfigure();
         formConfigure();
-//        String api = "Welcome admin! " + getWeather();
-        String api = "Weather";
+        String api = "Welcome admin! " + getWeather();
         HorizontalLayout headers = new HorizontalLayout(new H2("Schooly"), new H6(api));
         headers.setAlignItems(Alignment.BASELINE);
         headers.setSpacing(TRUE);

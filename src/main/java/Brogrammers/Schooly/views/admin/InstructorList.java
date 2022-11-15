@@ -24,6 +24,7 @@ import javax.annotation.security.RolesAllowed;
 
 import java.io.IOException;
 
+import static Brogrammers.Schooly.APIAndOtherMethods.getWeather;
 import static java.lang.Boolean.TRUE;
 
 @PageTitle("Admin-Instructor")
@@ -40,15 +41,14 @@ public class InstructorList extends VerticalLayout {
     ModifyFormInstructor form;
 
 
-    public InstructorList(SecurityService securityService, InstructorRepository instructorRepository, CourseRepository courseRepository) {
+    public InstructorList(SecurityService securityService, InstructorRepository instructorRepository, CourseRepository courseRepository) throws JSONException {
         this.securityService = securityService;
         this.instructorRepository = instructorRepository;
         this.courseRepository = courseRepository;
         setSizeFull();
         gridConfigure();
         formConfigure();
-//        String api = "Welcome admin! " + getWeather();
-        String api = "Weather";
+        String api = "Welcome admin! " + getWeather();
         HorizontalLayout headers = new HorizontalLayout(new H2("Schooly"), new H6(api));
         headers.setAlignItems(Alignment.BASELINE);
         headers.setSpacing(TRUE);
